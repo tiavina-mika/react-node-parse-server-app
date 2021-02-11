@@ -8,7 +8,7 @@ const path = require('path');
 const DEV = process.env.NODE_ENV !== 'production';
 
 //---- port ----//
-const port = 1337;
+const port = 1338;
 
 // ------------------------------------------------------------------------- //
 // ------------------------ envvars initialisation ------------------------- //

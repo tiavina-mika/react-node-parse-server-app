@@ -9,33 +9,33 @@ const INITIAL_STATE: ProjectState = {
 
 const projectReducer = (state = INITIAL_STATE, action: ProjectAction): ProjectState => {
   switch (action.type) {
-    case 'PROJECT_LOADED':
-      return {
-        ...state,
-        project: action.project,
-      };
-    case 'REMOVE_PROJECT':
-      return {
-        ...state,
-        project: null,
-      };
-    case 'PROJECT_UPDATED':
-      return {
-        ...state,
-        project: action.project,
-      };
-    case 'PROJECTS_LOADED':
-      return {
-        ...state,
-        projects: action.projects,
-      };
-    case 'PROJECTS_UPDATED':
-      return {
-        ...state,
-        projects: action.projects,
-      };
-    default:
-      return state;
+  case 'PROJECT_LOADED':
+    return {
+      ...state,
+      project: action.project,
+    };
+  case 'REMOVE_PROJECT':
+    return {
+      ...state,
+      project: null,
+    };
+  case 'PROJECT_UPDATED':
+    return {
+      ...state,
+      project: action.project,
+    };
+  case 'PROJECTS_LOADED':
+    return {
+      ...state,
+      projects: action.projects,
+    };
+  case 'PROJECTS_UPDATED':
+    return {
+      ...state,
+      projects: action.projects,
+    };
+  default:
+    return state;
   }
 };
 

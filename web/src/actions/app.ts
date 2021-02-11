@@ -1,12 +1,11 @@
-import { Dispatch } from './../store';
 import Parse from 'parse';
-import { push } from 'connected-react-router';
+import {  AppThunk, AppDispatch } from '../store';
 
 import { actionWithLoader } from './utils';
-import { AppThunk, AppDispatch } from '../store';
+
 
 import { getCurrentUser } from '../reducers/app';
-import { AppState } from '../types/app';
+
 /* eslint-disable @typescript-eslint/no-use-before-define */
 const CONNECTION_FAILED = 'Votre connexion semble dégradée, vérifiez-là puis actualisez la page.';
 /**
@@ -15,10 +14,10 @@ const CONNECTION_FAILED = 'Votre connexion semble dégradée, vérifiez-là puis
  */
 export const handleErrorMessage = (error: any): string => {
   switch (error.code) {
-    case 100:
-      return CONNECTION_FAILED;
-    default:
-      return error.message;
+  case 100:
+    return CONNECTION_FAILED;
+  default:
+    return error.message;
   }
 };
 
@@ -72,7 +71,7 @@ export const closeMessage = (): Close => ({ type: 'CLOSE_MESSAGE' });
 
 export const login = (username: string, password: string): AppThunk => actionWithLoader(async (dispatch: AppDispatch, getState: any): Promise<void> => {
   await Parse.User.logIn(username, password);
-	const currentUser = Parse.User.current() || getCurrentUser(getState);
+  const currentUser = Parse.User.current() || getCurrentUser(getState);
   if (currentUser && currentUser.getSessionToken()) {
     dispatch({
       type: 'LOGIN_SUCCESS',
@@ -205,4 +204,4 @@ export function updateUserIntoLocalStorage(user: any) {
 // --------------------------------------------------------//
 export const showHomeThunk = (dispatch: any): any => {
   return showHomeThunk(dispatch);
-}
+};

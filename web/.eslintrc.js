@@ -53,6 +53,7 @@ module.exports = {
     "arrow-body-style": "off",
     "@typescript-eslint/indent": "off",
     "react/jsx-indent": "off",
+    "indent": ["error", 2],
     "prefer-arrow/prefer-arrow-functions": [
       "warn",
       {

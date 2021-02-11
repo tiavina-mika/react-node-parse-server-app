@@ -12,48 +12,48 @@ const INITIAL_STATE: AppState = {
 
 const projectsReducer = (state = INITIAL_STATE, action: AppAction): AppState => {
   switch (action.type) {
-    case 'LOADING_START':
-      return {
-        ...state,
-        loading: true,
-      };
-    case 'LOADING_END':
-      return {
-        ...state,
-        loading: false,
-      };
-    case 'LOGIN_SUCCESS':
-      return {
-        ...state,
-        user: action.user,
-      };
-    case 'LOGOUT_SUCCESS':
-      return {
-        ...state,
-        user: null,
-      };
-    case 'ERROR':
-      return {
-        ...state,
-        error: action.message,
-      };
-    case 'CLOSE_ERROR':
-      return {
-        ...state,
-        error: null,
-      };
-    case 'MESSAGE':
-      return {
-        ...state,
-        message: action.message,
-      };
-    case 'CLOSE_MESSAGE':
-      return {
-        ...state,
-        message: null,
-      };
-    default:
-      return state;
+  case 'LOADING_START':
+    return {
+      ...state,
+      loading: true,
+    };
+  case 'LOADING_END':
+    return {
+      ...state,
+      loading: false,
+    };
+  case 'LOGIN_SUCCESS':
+    return {
+      ...state,
+      user: action.user,
+    };
+  case 'LOGOUT_SUCCESS':
+    return {
+      ...state,
+      user: null,
+    };
+  case 'ERROR':
+    return {
+      ...state,
+      error: action.message,
+    };
+  case 'CLOSE_ERROR':
+    return {
+      ...state,
+      error: null,
+    };
+  case 'MESSAGE':
+    return {
+      ...state,
+      message: action.message,
+    };
+  case 'CLOSE_MESSAGE':
+    return {
+      ...state,
+      message: null,
+    };
+  default:
+    return state;
   }
 };
 

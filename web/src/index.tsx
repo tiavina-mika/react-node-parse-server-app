@@ -5,12 +5,11 @@ import Parse from 'parse';
 import { Provider } from 'react-redux';
 import { ConnectedRouter } from 'connected-react-router';
 
-import './index.css';
-import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { DEFAULT } from './utils/theme';
 import { history, store } from './store';
 import Routes from './Routes';
+import './index.css';
 
 const { location } = window;
 // LOCAL can also mean "accessed by a remote machine (like a Mac) on the local dev network"
@@ -21,7 +20,7 @@ const hostName = location.hostname;
 // ---------------------------------------------------//
 // ------------------- Parse init --------------------//
 // ---------------------------------------------------//
-const portWithColon = (window as any).LOCAL ? ':1337' : '';
+const portWithColon = (window as any).LOCAL ? ':1338' : '';
 Parse.initialize(process.env.REACT_APP_APP_ID as string);
 Parse.serverURL = `${location.protocol  }//${  location.hostname  }${portWithColon  }/parse`;
 

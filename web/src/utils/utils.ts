@@ -304,14 +304,14 @@ export function isNull(item: any): any {
   // see Loose Equality Comparisons With == at ( https://www.sitepoint.com/javascript-truthy-falsy )
   const typeOfValue = typeof item;
   switch (typeOfValue) {
-    case 'string':
-      return item.trim() === '';
-    case 'object':
-      return Object.is(item, null) || Object.values(item).every(val => isNull(val));
-    case 'number':
-      return !item;
-    default:
-      return item == null;
+  case 'string':
+    return item.trim() === '';
+  case 'object':
+    return Object.is(item, null) || Object.values(item).every(val => isNull(val));
+  case 'number':
+    return !item;
+  default:
+    return item == null;
   }
 }
 
@@ -470,31 +470,31 @@ export function isTextEmpty(string: any) {
 export function getErrorMessage(fieldName: any) {
   if (!fieldName) return null;
   switch (fieldName.toString()) {
-    case 'firstName':
-      return 'Saisissez votre prénom';
-    case 'lastName':
-      return 'Saisissez votre nom';
-    case 'email':
-    case 'username':
-      return 'Saisissez une adresse e-mail';
-    case 'password':
-      return 'Choisissez votre mot de passe';
-    case 'confirmPassword':
-      return 'Confirmez votre mot de passe';
-    case 'address':
-    case 'address2':
-      return 'Saisissez une adresse complète';
-    case 'zipCode':
-    case 'code':
-      return 'Saisissez les 5 chiffres de code postal';
-    case 'city':
-      return 'Saisissez le nom de la ville';
-    case 'phone':
-      return 'Saisissez un numéro téléphone valide.';
-    case 'phoneNumber':
-      return 'Saisissez plutôt un numéro de mobile.';
-    default:
-      break;
+  case 'firstName':
+    return 'Saisissez votre prénom';
+  case 'lastName':
+    return 'Saisissez votre nom';
+  case 'email':
+  case 'username':
+    return 'Saisissez une adresse e-mail';
+  case 'password':
+    return 'Choisissez votre mot de passe';
+  case 'confirmPassword':
+    return 'Confirmez votre mot de passe';
+  case 'address':
+  case 'address2':
+    return 'Saisissez une adresse complète';
+  case 'zipCode':
+  case 'code':
+    return 'Saisissez les 5 chiffres de code postal';
+  case 'city':
+    return 'Saisissez le nom de la ville';
+  case 'phone':
+    return 'Saisissez un numéro téléphone valide.';
+  case 'phoneNumber':
+    return 'Saisissez plutôt un numéro de mobile.';
+  default:
+    break;
   }
 }
 

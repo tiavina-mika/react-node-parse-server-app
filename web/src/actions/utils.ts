@@ -1,19 +1,15 @@
-import { RootState } from './../store';
-import { AppThunk, AppDispatch } from '../store';
 import { push } from 'connected-react-router';
-// import { browserHistory } from 'react-router';
 
-import { showError } from './app';
+import { RootState, AppDispatch } from '../store';
 import { toId } from '../utils/parseUtils';
-
-// const { push : routerPush, goBack : goBackInRouter } = browserHistory;
+import { showError } from './app';
 
 /* eslint-disable @typescript-eslint/no-use-before-define */
 
 export const showParseObj = (urlPrefix: string, parseObjOrId: string, subPage?: string) => {
-	const id = toId(parseObjOrId);
-	return push('/' + urlPrefix + '-' + id + (subPage ? "/" + subPage : ""));
-}
+  const id = toId(parseObjOrId);
+  return push('/' + urlPrefix + '-' + id + (subPage ? '/' + subPage : ''));
+};
 
 /**
  * returns a thunk
@@ -39,37 +35,37 @@ export const actionWithLoader = (thunkOrPromise: any): any => async (dispatch: A
   }
 };
 
-export const onEnter = ({store, actionThunk, getReplacingPath, withLoader = true}: any) => {
-	return async (nextState: any, replace: any, callback: any) => {
-		try {
-			if (getReplacingPath) {
-				const replacingPath = await getReplacingPath(store.getState);
-				if (replacingPath) {
-					replace(replacingPath);
-					callback();
-					return;
-				}
-			}
+export const onEnter = ({ store, actionThunk, getReplacingPath, withLoader = true }: any) => {
+  return async (nextState: any, replace: any, callback: any) => {
+    try {
+      if (getReplacingPath) {
+        const replacingPath = await getReplacingPath(store.getState);
+        if (replacingPath) {
+          replace(replacingPath);
+          callback();
+          return;
+        }
+      }
 
-			//---- actual call ----//
-			const dispatchingFunction = actionThunk(nextState.params);
-			let result;
-			if (withLoader) {
-				result = actionWithLoader(dispatchingFunction)(store.dispatch, store.getState);
-			} else {
-				result = dispatchingFunction(store.dispatch, store.getState);
-			}
-			if (result && result.then) {
-				await result;
-			}
+      // ---- actual call ----//
+      const dispatchingFunction = actionThunk(nextState.params);
+      let result;
+      if (withLoader) {
+        result = actionWithLoader(dispatchingFunction)(store.dispatch, store.getState);
+      } else {
+        result = dispatchingFunction(store.dispatch, store.getState);
+      }
+      if (result && result.then) {
+        await result;
+      }
 
-			callback();
-		} catch(error) {
-			console.error(error);
-			callback(error);
-		}
-	}
-}
+      callback();
+    } catch (error) {
+      console.error(error);
+      callback(error);
+    }
+  };
+};
 
 
 // export function goBack() {
