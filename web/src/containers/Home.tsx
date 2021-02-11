@@ -1,11 +1,7 @@
-import { ReactNode, useEffect } from 'react';
+import { useEffect } from 'react';
 import Parse from 'parse';
 
-type Props = {
-  children: ReactNode;
-};
-
-const App = ({ children }: Props) => {
+const Home = () => {
 
   // useEffect(() => {
   //   const addProject = async () => {
@@ -19,11 +15,10 @@ const App = ({ children }: Props) => {
   // }, []);
 
   return (
-    <div className="App">
-      <h1>Everywhere</h1>
-      {children}
+    <div>
+      <h1>Home</h1>
     </div>
   );
 };
 
-export default App;
+export default Home;
