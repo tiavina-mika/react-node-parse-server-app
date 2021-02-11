@@ -19,13 +19,13 @@ const useStyles = makeStyles({
 });
 
 type Props = {
-	onPreview: any;
-	onEdit: any;
-	onDelete: any;
-	item: any;
+	onPreview?: any;
+	onEdit?: any;
+	onDelete?: any;
+	item?: any;
 	openDialog?: boolean;
-	label: any;
-	fullHeight: boolean;
+	label?: any;
+	fullHeight?: boolean;
 };
 const TableButtonsAction = ({ 
   onPreview,
@@ -105,11 +105,11 @@ const TableButtonsAction = ({
         title="Suppression"
         content={(
           <span>
-Voulez-vous supprimer
+            Voulez-vous supprimer
             <b>
               {label}
             </b>
-?
+            ?
           </span>
         )}
         isVisible={open}

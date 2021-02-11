@@ -6,10 +6,10 @@ import { Provider } from 'react-redux';
 import { ConnectedRouter } from 'connected-react-router';
 
 import reportWebVitals from './reportWebVitals';
-import { DEFAULT } from './utils/theme';
 import { history, store } from './store';
 import Routes from './Routes';
-import './index.css';
+import { theme } from './utils/theme';
+import './styles.css';
 
 const { location } = window;
 // LOCAL can also mean "accessed by a remote machine (like a Mac) on the local dev network"
@@ -29,7 +29,7 @@ ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
       <ConnectedRouter history={history}>
-        <ThemeProvider theme={DEFAULT}>
+        <ThemeProvider theme={theme}>
           {/* <App /> */}
           <Routes />
         </ThemeProvider>

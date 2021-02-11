@@ -3,7 +3,7 @@ import { Router, Route, Switch, useRouteMatch } from 'react-router';
 import { createBrowserHistory } from 'history';
 
 import App from './containers/App';
-import Projects from './containers/Projects';
+import Projects from './containers/projects/Projects';
 import Home from './containers/Home';
 
 const history = createBrowserHistory();

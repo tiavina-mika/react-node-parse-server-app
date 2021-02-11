@@ -1,3 +1,4 @@
+import { Card } from '@material-ui/core';
 
 const Projects = () => {
 
@@ -13,9 +14,9 @@ const Projects = () => {
   // }, []);
 
   return (
-    <div>
+    <Card>
       <h1>Projects</h1>
-    </div>
+    </Card>
   );
 };
 

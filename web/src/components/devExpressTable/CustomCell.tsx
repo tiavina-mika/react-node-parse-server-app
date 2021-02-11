@@ -14,7 +14,7 @@ const useStyles = makeStyles({
 type Props = {
 	value: any;
 	alignment?: any;
-	className: string;
+	className?: string;
 };
 const CustomCell = ({ value, alignment, className }: Props) => {
 

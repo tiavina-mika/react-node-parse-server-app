@@ -84,7 +84,7 @@ const ReduxFormReactSelect = ({
 }: Props) => {
 
   return (
-	  <Select 
+    <Select 
       {...input}
       onChange={(value: string) => input.onChange(value)}
       onBlur={() => input.onBlur ? input.onBlur(input.value) : {}}
@@ -95,7 +95,7 @@ const ReduxFormReactSelect = ({
       isMulti={isMulti}
       isClearable={isClearable}
       {...otherProps}
-	  />
+    />
   );
 };
 
