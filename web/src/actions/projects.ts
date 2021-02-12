@@ -1,3 +1,4 @@
+import { push } from 'connected-react-router';
 import Parse from 'parse';
 import { AppThunk, AppDispatch, RootState } from '../store';
 import { getValues, setValues } from '../utils/parseUtils';
@@ -183,6 +184,9 @@ export const loadProjectThunk = (projectId: any): any => {
  */
 export const showProject = (projectId: string) => showParseObj('project', projectId);
 
+export const goToProjects = () => async (dispatch: AppDispatch) => {
+  dispatch(push('/dashboard'));
+};
 // export function showProjectCreation() {
 // 	return push('/projectCreation');
 // }

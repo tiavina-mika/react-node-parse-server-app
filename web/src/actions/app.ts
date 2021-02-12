@@ -1,3 +1,4 @@
+import { push } from 'connected-react-router';
 import Parse from 'parse';
 import {  AppThunk, AppDispatch } from '../store';
 
@@ -59,7 +60,7 @@ export const loginSuccess = (): AppThunk => actionWithLoader(async (dispatch: Ap
     // we go to home with we were on the login path
     // (not in case of an auto-login from index.js)
     if (window.location.pathname.endsWith('login')) {
-      showHomeThunk(dispatch);
+      dispatch(goToDashboard());
     }
   } else {
     // retry login
@@ -84,14 +85,14 @@ export const login = (username: string, password: string): AppThunk => actionWit
     // we go to home with we were on the login path
     // (not in case of an auto-login from index.js)
     if (window.location.pathname.endsWith('login')) {
-      showHomeThunk(dispatch);
+      dispatch(goToDashboard());
     }
   } else {
     // retry login
     // showLogin();
   }
   // await loginSuccess()(dispatch, getState);
-  showHomeThunk(dispatch);
+  dispatch(goToDashboard());
 });
 
 export const logout = () => actionWithLoader(async (dispatch: AppDispatch) => {
@@ -148,39 +149,6 @@ export function updateUserIntoLocalStorage(user: any) {
   localStorage.setItem(currentUserPath, userData);
 }
 
-// ---------------------------------------------------------//
-// ---------------------- onEnterApp -----------------------//
-// ---------------------------------------------------------//
-// export const onEnterApp = (store) => {
-// 	return async (nextState, replace, callback) => {
-// 		try {
-// 			const getState = store.getState;
-// 			const user = getCurrentUser(getState());
-// 			if (user) {
-// 				// todo
-// 			}
-// 			callback();
-// 		} catch (error) {
-// 			console.error(error);
-// 			callback(error);
-// 		}
-// 	}
-// }
-
-// export function onEnterHome(store) {
-// 	return onEnter({
-// 		store,
-// 		actionThunk: () => {
-// 			return async (dispatch, getState) => {
-// 				const user = getCurrentUser(getState());
-// 				if (user) {
-
-// 				}
-// 			}
-// 		}
-// 	});
-// }
-
 // export function onEnterUnknownRoute(store) {
 // 	return async (nextState, replace, callback) => {
 // 		try {
@@ -202,6 +170,7 @@ export function updateUserIntoLocalStorage(user: any) {
 // --------------------------------------------------------//
 // ---------------------- Routing -------------------------//
 // --------------------------------------------------------//
-export const showHomeThunk = (dispatch: any): any => {
-  return showHomeThunk(dispatch);
+
+export const goToDashboard = () => async (dispatch: AppDispatch) => {
+  dispatch(push('/dashboard'));
 };

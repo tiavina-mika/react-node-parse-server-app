@@ -6,6 +6,7 @@ const INITIAL_STATE: AppState = {
   user: null,
   loading: false,
   error: null,
+  variant: null,
   message: null,
   title: null,
 };
@@ -46,6 +47,7 @@ const projectsReducer = (state = INITIAL_STATE, action: AppAction): AppState => 
     return {
       ...state,
       message: action.message,
+      variant: action.variant || 'info',
     };
   case 'CLOSE_MESSAGE':
     return {
@@ -65,5 +67,7 @@ export const getError = (state: RootState, errorIfNotFound = false) => getData(s
 export const getMessage = (state: RootState, errorIfNotFound = false) => getData(state, 'app.message', errorIfNotFound && 'No message in app');
 export const getLoading = (state: RootState, errorIfNotFound = false) => getData(state, 'app.loading', errorIfNotFound && 'No action with loader in app');
 export const getTitle = (state: RootState, errorIfNotFound = false) => getData(state, 'app.title', errorIfNotFound && 'No title in app');
-
+export const getMessageVariant = (state: RootState, errorIfNotFound = false) => {
+	return getData(state, 'app.variant', errorIfNotFound && 'No message in app');
+};
 export default projectsReducer;

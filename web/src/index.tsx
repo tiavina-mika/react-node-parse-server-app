@@ -6,6 +6,7 @@ import { Provider } from 'react-redux';
 import { ConnectedRouter } from 'connected-react-router';
 import preset from 'jss-preset-default';
 import { create } from 'jss';
+import { HelmetProvider } from 'react-helmet-async';
 
 import reportWebVitals from './reportWebVitals';
 import { history, store } from './store';
@@ -34,11 +35,13 @@ const generateClassName = createGenerateClassName();
 ReactDOM.render(
     <Provider store={store}>
       <ConnectedRouter history={history}>
-        <StylesProvider jss={jss} generateClassName={generateClassName}>
-          <ThemeProvider theme={theme}>
-            <Routes />
-          </ThemeProvider>
-        </StylesProvider>
+        <HelmetProvider>
+          <StylesProvider jss={jss} generateClassName={generateClassName}>
+            <ThemeProvider theme={theme}>
+              <Routes />
+            </ThemeProvider>
+          </StylesProvider>
+        </HelmetProvider>
       </ConnectedRouter>
     </Provider>,
   document.getElementById('root'),

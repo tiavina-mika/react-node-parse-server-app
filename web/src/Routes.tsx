@@ -2,7 +2,7 @@ import { Router, Route, Switch, useRouteMatch } from 'react-router';
 // import { useStore } from 'react-redux';
 import { createBrowserHistory } from 'history';
 
-import App from './containers/App';
+import App from './containers/Dashboard';
 import Projects from './containers/projects/Projects';
 import Home from './containers/Home';
 
