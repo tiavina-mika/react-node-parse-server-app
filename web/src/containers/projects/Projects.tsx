@@ -50,7 +50,9 @@ const Projects = () => {
         title='Liste des projets'
         content={<ProjectsTable rows={projects} />}
         withActionButtons={false}
-        actionHeaderButtons={<AddIconButton onAdd={_openDialog} />}
+        // actionHeaderButtons={<AddIconButton onAdd={_openDialog} />}
+        onHeaderPrimaryClick={_openDialog}
+        headerPrimaryLabel="Nouveau Projet"
         fullScreen
       />
       <ModalDialog

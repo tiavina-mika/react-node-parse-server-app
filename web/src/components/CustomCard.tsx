@@ -1,6 +1,5 @@
 import React, { ReactNode } from 'react';
 import clsx from 'clsx';
-
 import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
@@ -18,8 +17,9 @@ const useStyles = makeStyles({
   },
   header: {
     width: '100%',
-    padding: '10px 20px',
+    padding: 20,
     borderBottom: grey[500],
+    composes: 'flexRow center',
   },
   content: {
     composes: 'stretchSelf',
@@ -30,6 +30,10 @@ const useStyles = makeStyles({
     width: '100%',
     padding: '4px 10px',
     justifyContent: ({ actions }: any) => actions ? 'flex-start' : 'flex-end',
+  },
+  action: {
+    marginTop: 0,
+    marginLeft: 0,
   },
   buttons: {
 
@@ -56,13 +60,15 @@ type Props = {
 	contentClassName?: any;
 	withActionButtons?: boolean;
 	actions?: ReactNode;
-	actionClassName?: any;
+	actionClassName?: string;
 	okAction?: any;
 	cancelAction?: any;
 	okLabel?: string;
 	cancelLabel?: string;
 	fullScreen?: boolean;
 	actionHeaderButtons?: any;
+  onHeaderPrimaryClick: () => void;
+  headerPrimaryLabel?: string;
 };
 
 const CustomCard = ({
@@ -75,6 +81,8 @@ const CustomCard = ({
   withActionButtons,
   actionClassName,
   cancelLabel = 'Annuler',
+  onHeaderPrimaryClick,
+  headerPrimaryLabel,
 }: Props) => {
 
   // styles
@@ -120,8 +128,17 @@ const CustomCard = ({
               {title}
             </Typography>
           )}
-          classes={{ root: clsx(classes.header, titleClassName) }}
-          action={actionHeaderButtons}
+          classes={{ root: clsx(classes.header, titleClassName), action: classes.action }}
+          // action={actionHeaderButtons}
+          action={(
+            <>
+              {onHeaderPrimaryClick && (
+                <Button onClick={onHeaderPrimaryClick} color="primary" variant="contained">
+                  {headerPrimaryLabel}
+                </Button>
+              )}
+            </>
+          )}
         />
       )}
 

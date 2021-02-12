@@ -16,7 +16,8 @@ const useStyles = makeStyles({
     composes: 'flexColumn stretch',
   },
   dialogAction: {
-    margin: '13px 30px',
+    // margin: '13px 30px',
+    padding: '0 18px 16px 18px',
   },
   button: {
     minHeight: 32,
@@ -67,9 +68,9 @@ const ModalDialog = ({
       </DialogContent>
 
       { (!!labelCancel || !!labelConfirm || !!labelOtherAction) && (
-        <DialogActions classes={{ root: inBtnAction ? classes.dialogAction : undefined }}>
+        <DialogActions classes={{ root: classes.dialogAction }}>
           { onClose && labelCancel && !greenBtn && (
-            <Button onClick={onClose} classes={{ root: classes.button }}>
+            <Button onClick={onClose}>
               {labelCancel}
             </Button>
           )}
@@ -79,7 +80,7 @@ const ModalDialog = ({
             </Button>
           )}
           { onConfirm && labelConfirm && !loading && !greenBtn && (
-            <Button onClick={onConfirm} color='primary' classes={{ root: classes.button }}>
+            <Button onClick={onConfirm} color='primary' variant="contained">
               {labelConfirm}
             </Button>
           )}
