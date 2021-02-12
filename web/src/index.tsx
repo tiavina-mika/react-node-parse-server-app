@@ -1,9 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { ThemeProvider } from '@material-ui/core/styles';
+import { createGenerateClassName, StylesProvider, ThemeProvider } from '@material-ui/core/styles';
 import Parse from 'parse';
 import { Provider } from 'react-redux';
 import { ConnectedRouter } from 'connected-react-router';
+import preset from 'jss-preset-default';
+import { create } from 'jss';
 
 import reportWebVitals from './reportWebVitals';
 import { history, store } from './store';
@@ -24,14 +26,19 @@ const portWithColon = (window as any).LOCAL ? ':1338' : '';
 Parse.initialize(process.env.REACT_APP_APP_ID as string);
 Parse.serverURL = `${location.protocol  }//${  location.hostname  }${portWithColon  }/parse`;
 
+const jss = create(preset());
+
+// very important for react-await-dialog
+const generateClassName = createGenerateClassName();
 
 ReactDOM.render(
     <Provider store={store}>
       <ConnectedRouter history={history}>
-        <ThemeProvider theme={theme}>
-          {/* <App /> */}
-          <Routes />
-        </ThemeProvider>
+        <StylesProvider jss={jss} generateClassName={generateClassName}>
+          <ThemeProvider theme={theme}>
+            <Routes />
+          </ThemeProvider>
+        </StylesProvider>
       </ConnectedRouter>
     </Provider>,
   document.getElementById('root'),
