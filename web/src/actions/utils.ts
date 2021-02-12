@@ -35,38 +35,6 @@ export const actionWithLoader = (thunkOrPromise: any): any => async (dispatch: A
   }
 };
 
-export const onEnter = ({ store, actionThunk, getReplacingPath, withLoader = true }: any) => {
-  return async (nextState: any, replace: any, callback: any) => {
-    try {
-      if (getReplacingPath) {
-        const replacingPath = await getReplacingPath(store.getState);
-        if (replacingPath) {
-          replace(replacingPath);
-          callback();
-          return;
-        }
-      }
-
-      // ---- actual call ----//
-      const dispatchingFunction = actionThunk(nextState.params);
-      let result;
-      if (withLoader) {
-        result = actionWithLoader(dispatchingFunction)(store.dispatch, store.getState);
-      } else {
-        result = dispatchingFunction(store.dispatch, store.getState);
-      }
-      if (result && result.then) {
-        await result;
-      }
-
-      callback();
-    } catch (error) {
-      console.error(error);
-      callback(error);
-    }
-  };
-};
-
 
 // export function goBack() {
 // 	goBackInRouter();

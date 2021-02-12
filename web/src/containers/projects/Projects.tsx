@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { submit } from 'redux-form';
 
@@ -9,9 +9,10 @@ import ModalDialog from '../../components/ModalDialog';
 import ProjectsTable from './ProjectsTable';
 import ProjectForm from './ProjectForm';
 
-import { createProject } from '../../actions/projects';
+import { createProject, loadProjects } from '../../actions/projects';
 
 import { getProjects } from '../../reducers/projects';
+import { useLoadData } from '../../hooks/useLoadData';
 
 const Projects = () => {
 
@@ -20,8 +21,14 @@ const Projects = () => {
   // dispatch
   const dispatch = useDispatch();
 
+  // useEffect(() => {
+  //   dispatch(loadProjects());
+  // }, []);
+
+  const projects = useLoadData(loadProjects, getProjects);
+
   // selectors
-  const projects = useSelector(getProjects) || [];
+  // const projects = useSelector(getProjects) || [];
 
   // dialog actions
   const _openDialog = () => setOpenDialog(true);

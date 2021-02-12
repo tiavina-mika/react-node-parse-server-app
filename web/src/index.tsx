@@ -26,7 +26,6 @@ Parse.serverURL = `${location.protocol  }//${  location.hostname  }${portWithCol
 
 
 ReactDOM.render(
-  <React.StrictMode>
     <Provider store={store}>
       <ConnectedRouter history={history}>
         <ThemeProvider theme={theme}>
@@ -34,8 +33,7 @@ ReactDOM.render(
           <Routes />
         </ThemeProvider>
       </ConnectedRouter>
-    </Provider>
-  </React.StrictMode>,
+    </Provider>,
   document.getElementById('root'),
 );
 

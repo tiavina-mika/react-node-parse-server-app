@@ -1,9 +1,9 @@
+import { Box } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
 
 const useStyles = makeStyles({
   cell: {
-    composes: 'flexRow stretch center',
     height: 50,
   },
   right: {
@@ -22,7 +22,9 @@ const CustomCell = ({ value, alignment, className }: Props) => {
   const classes = useStyles();
 
   return (
-    <div 
+    <Box
+      display="flex"
+      alignItems="center"
       className={clsx(
         classes.cell, 
         alignment && alignment === 'right' && classes.right,
@@ -30,7 +32,7 @@ const CustomCell = ({ value, alignment, className }: Props) => {
       )}
     >
       {value}
-    </div>
+    </Box>
   );
 };
 

@@ -2,13 +2,11 @@ import React, { useCallback, useState } from 'react';
 import clsx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles';
 import { Button } from 'devextreme-react/button';
+import { Box } from '@material-ui/core';
 
 import ModalDialog from '../ModalDialog';
 
 const useStyles = makeStyles({
-  root: {
-    composes: 'flexRow stretch center justifyCenter',
-  },
   button: {
     border: 'none',
     backgroundColor: 'transparent',
@@ -77,7 +75,12 @@ const TableButtonsAction = ({
   };
 
   return (
-    <div className={clsx(classes.root, { [classes.fullHeight]: fullHeight })}>
+    <Box
+      display="flex"
+      justifyContent="center"
+      alignItems="center"
+      className={clsx({ [classes.fullHeight]: fullHeight })}
+    >
       {onPreview && (
         <Button
           icon="movetofolder"
@@ -105,9 +108,9 @@ const TableButtonsAction = ({
         title="Suppression"
         content={(
           <span>
-            Voulez-vous supprimer
+            Voulez-vous supprimer 
             <b>
-              {label}
+               {label}
             </b>
             ?
           </span>
@@ -116,7 +119,7 @@ const TableButtonsAction = ({
         onConfirm={handleDelete}
         onClose={_closeDialog}
       />
-    </div>
+    </Box>
   );
 };
 

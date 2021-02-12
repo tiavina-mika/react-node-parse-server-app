@@ -1,8 +1,5 @@
 export interface Project {
-  _id: string;
-  name: string;
-  createdAt: string;
-  updatedAt: string;
+  [x: string]: any;
 }
 
 export interface ProjectState {

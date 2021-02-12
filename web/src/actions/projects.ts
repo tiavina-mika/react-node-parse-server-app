@@ -1,8 +1,7 @@
 import Parse from 'parse';
 import { AppThunk, AppDispatch, RootState } from '../store';
 import { getValues, setValues } from '../utils/parseUtils';
-import { onEnter, showParseObj, actionWithLoader  } from './utils';
-import { showHomeThunk } from './app';
+import { showParseObj, actionWithLoader  } from './utils';
 
 import { getProject, getProjects } from '../reducers/projects';
 
@@ -125,24 +124,25 @@ export const loadProjectsThunk = (): any => {
 };
 
 /**
- * onEnter projects
- * @param store
- * @returns {function(*, *, *): Promise<undefined>}
+ * load all templates
+ * @returns {Function}
  */
-export const onEnterProjects = (store: any) => {
-  return onEnter({
-    store,
-    /* eslint-disable-next-line @typescript-eslint/no-unused-vars */
-    actionThunk: (_: any) => {
-      return async (dispatch: AppDispatch, getState: () => RootState) => {
-        const projects = await loadProjectsThunk()(dispatch, getState);
-        if (!projects) {
-          showHomeThunk(dispatch);
-        }
-      };
-    },
-  });
+export const loadProjects = (): any => {
+  return async (dispatch: AppDispatch) => {
+    const projects = await new Parse.Query('Project')
+      .notEqualTo('deleted', true)
+      .find();
+
+    if (projects && Array.isArray(projects)) {
+      dispatch({
+        type: 'PROJECTS_LOADED',
+        projects,
+      });
+    }
+    return projects;
+  };
 };
+
 
 // --------------------------------------------------------//
 // ------------------ loading template --------------------//
@@ -171,27 +171,6 @@ export const loadProjectThunk = (projectId: any): any => {
 
     return currentProject;
   };
-};
-
-/**
- * onEnter template preview or edit page
- * @param store
- * @returns {function(*, *, *): Promise<undefined>}
- */
-export const onEnterProject = (store: any) => {
-  return onEnter({
-    store,
-    actionThunk: (params: any) => {
-      return async (dispatch: AppDispatch, getState: () => RootState) => {
-        const { projectId } = params;
-        const project = await loadProjectThunk(projectId)(dispatch, getState);
-        if (!project) {
-          // template not found
-          showHomeThunk(dispatch);
-        }
-      };
-    },
-  });
 };
 
 // --------------------------------------------------------//

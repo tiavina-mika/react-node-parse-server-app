@@ -1,12 +1,12 @@
 import { ReactNode } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
+import { Box } from '@material-ui/core';
 
 const useStyles = makeStyles({
   imageContainer: {
     width: 60, 
     height: 50,
-    composes: 'flexRow center',
     overflow: 'hidden',
   },
   image: {
@@ -25,7 +25,11 @@ const CustomImageCell = ({ value, className, children }: Props) => {
   const classes = useStyles();
 
   return (
-    <div className={clsx(classes.imageContainer, className)}>
+    <Box 
+      className={clsx(classes.imageContainer, className)}
+      display="flex"
+      alignItems="center"
+    >
       { value 
         ? (
           <img 
@@ -35,7 +39,7 @@ const CustomImageCell = ({ value, className, children }: Props) => {
           />
         )
         : children}
-    </div>
+    </Box>
   );
 };
 

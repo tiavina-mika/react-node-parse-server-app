@@ -30,7 +30,7 @@ type Props = {
   component?: any;
   suffix?: string;
   children?: ReactNode;
-  [x: string]: any | null;
+  [x: string]: any;
 };
 
 const FormField = ({

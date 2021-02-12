@@ -65,6 +65,17 @@ h2 {
   color: inherit;
 }
 
+.width100 {
+  width: 100%;
+}
+input:-webkit-autofill { /* removes the ugly yellow bg when autofilled */
+	box-shadow: 0 0 0 1000px white inset;
+}
+input[type=submit] {
+	visibility: hidden;
+  padding: 0;
+  margin: 0;
+}
 /*----- Flex -------*/
 
 .flexRow {

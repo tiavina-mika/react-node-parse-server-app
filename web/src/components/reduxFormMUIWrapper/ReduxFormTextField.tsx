@@ -29,7 +29,7 @@ const ReduxFormTextField = ({
   const text = value || '';
 	
   const _onChange = (event: ChangeEvent<HTMLInputElement>): void => {
-    onChange(event.target.checked);
+    onChange(event.target.value);
   };
 
   return (

@@ -12,16 +12,18 @@ import ModalDialog from '../../components/ModalDialog';
 import { deleteProject, getProjectValues, updateProject } from '../../actions/projects';
 import CustomCell from '../../components/devExpressTable/CustomCell';
 import ProjectForm from './ProjectForm';
+import { Project } from '../../types/project';
 
 const useStyles = makeStyles({
   root: {},
 });
 
-const columns = ['id', 'name', 'updatedAt', 'data'];
+const columns = ['name', 'updatedAt', 'data'];
 
 type Props = {
-	rows: any[];
+	rows: Project[];
 };
+
 
 const ProjectsTable = ({ rows }: Props) => {
   // state
@@ -35,11 +37,10 @@ const ProjectsTable = ({ rows }: Props) => {
 
   // retrieving data
   const getDataSource = useCallback(() => {
-    return rows.map((project) => ({
-      [columns[0]]: project.id,
-      [columns[1]]: project.get('name'),
-      [columns[2]]: toMoment(new Date(project.updatedAt)).format('YYYY-MM-DD').toUpperCase(),
-      [columns[3]]: project,
+    return rows.map((project: Project) => ({
+      [columns[0]]: project.get('name'),
+      [columns[1]]: project.updatedAt,
+      [columns[2]]: project,
     }));
   }, [rows]);
 
@@ -61,16 +62,21 @@ const ProjectsTable = ({ rows }: Props) => {
     dispatch(deleteProject(deletedData));
   };
 
-  const onSelectionChanged = ({ selectedRowsData }: any) => {
-    const selectedData = selectedRowsData[0]; 
-    if (selectedData?.data) {
-      setSelectedData(selectedData.data);
-    }
-  };
+  // const onSelectionChanged = ({ selectedRowsData }: any) => {
+  //   const selectedData = selectedRowsData[0]; 
+  //   if (selectedData?.data) {
+  //     setSelectedData(selectedData.data);
+  //   }
+  // };
   const handleCloseDialog = () => {
     setSelectedData(null);
   };
 
+  	// open dialog
+	const _openEditDialog = (selectedData: any) => {
+    if (!selectedData?.data) return;
+		setSelectedData(selectedData.data);
+	};
 
   const _save = async (values: any) => {
 		if (!values) return;
@@ -85,31 +91,33 @@ const ProjectsTable = ({ rows }: Props) => {
     <div className={classes.root}>
       <Table
         dataSource={getDataSource()}
-        onSelectionChanged={onSelectionChanged}
-        selection={{ mode: 'single' }}
+        // onSelectionChanged={onSelectionChanged}
         actionRender={(value: any) => (
           <TableButtonsAction 
-            onDelete={() => handleDelete(value.data.id)}
-            label={value.data.name}
+						onEdit={() => _openEditDialog(value.data)}
+            onDelete={() => handleDelete(value.data.data.id)}
+            openDialog={!!rows.find(template => template.id === selectedData?.id)}
+						label={value.data.name}
           />
         )}
       >
         <Column
-          dataField={columns[1]}
+          dataField={columns[0]}
           caption="Nom"
           cellRender={({ data }) => <CustomCell value={data.name} />}
         />
         <Column
-          dataField={columns[2]}
+          dataField={columns[1]}
           caption="Date Modification" 
+          dataType="date"
           defaultSortOrder="desc"
-          cellRender={({ data }) => <CustomCell value={data.updatedAt} />}
+          cellRender={({ data }) => <CustomCell value={toMoment(new Date(data.updatedAt)).format('YYYY-MM-DD à HH:ss')} />}
         />
       </Table>
 
       {/* ----------------- Data Edit Dialog ----------------- */}
       <ModalDialog
-        title={`Modifier -  ${selectedData?.name} :`}
+        title={`Modifier - ${selectedData?.get('name')}`}
         content={<ProjectForm onSubmit={_save} initialValues={getInitialValues()} />}
         isVisible={!!rows.find(project => project.id === selectedData?.id)}
         onClose={handleCloseDialog}
