@@ -7,7 +7,6 @@ import { ConnectedRouter } from 'connected-react-router';
 import preset from 'jss-preset-default';
 import { create } from 'jss';
 import { HelmetProvider } from 'react-helmet-async';
-
 import reportWebVitals from './reportWebVitals';
 import { history, store } from './store';
 import Routes from './Routes';

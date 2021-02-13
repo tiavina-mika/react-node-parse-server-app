@@ -5,7 +5,11 @@ const { ParseServer } = require('parse-server');
 const ParseDashboard = require('parse-dashboard');
 const path = require('path');
 
+global.USE_MASTER_KEY = { useMasterKey: true };
+global.USE_READ_PREFERENCE = { readPreference: 'SECONDARY' };
+
 const DEV = process.env.NODE_ENV !== 'production';
+global.LOCAL = DEV;
 
 //---- port ----//
 const port = 1338;

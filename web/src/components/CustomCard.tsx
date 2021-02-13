@@ -36,7 +36,7 @@ const useStyles = makeStyles({
     marginLeft: 0,
   },
   buttons: {
-
+    composes: 'flexRow flex1',
   },
   okBtn: {
     marginLeft: 10,
@@ -66,16 +66,17 @@ type Props = {
 	okLabel?: string;
 	cancelLabel?: string;
 	fullScreen?: boolean;
-	actionHeaderButtons?: any;
-  onHeaderPrimaryClick: () => void;
+  onHeaderPrimaryClick?: () => void;
   headerPrimaryLabel?: string;
+  okBtnClassName?: string;
+  okBtnVariant?: 'text' | 'outlined' | 'contained' | undefined;
+  otherActions?: ReactNode;
 };
 
 const CustomCard = ({
   elevation = 3, rootClassName, fullScreen = false,
   title, titleClassName,
   content, contentClassName,
-  actionHeaderButtons,
   okAction, okLabel = 'Valider',
   actions, cancelAction,
   withActionButtons,
@@ -83,6 +84,9 @@ const CustomCard = ({
   cancelLabel = 'Annuler',
   onHeaderPrimaryClick,
   headerPrimaryLabel,
+  okBtnClassName,
+  okBtnVariant,
+  otherActions,
 }: Props) => {
 
   // styles
@@ -93,19 +97,23 @@ const CustomCard = ({
 
   const actionItems = actions || (
     <div className={classes.buttons}>
-      <Button color="secondary" onClick={cancelAction || _goHome}>
-        {cancelLabel}
-      </Button>
+      {cancelAction && (
+        <Button color="secondary" onClick={cancelAction || _goHome}>
+          {cancelLabel}
+        </Button>
+      )}
 
       {okAction && (
         <Button
           color="primary"
           onClick={okAction}
-          classes={{ root: classes.okBtn }}
+          variant={okBtnVariant}
+          classes={{ root: clsx(classes.okBtn, okBtnClassName) }}
         >
           {okLabel}
         </Button>
       )}
+      {otherActions}
     </div>
   );
 

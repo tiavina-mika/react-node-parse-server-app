@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { submit } from 'redux-form';
 
 import CustomCard from '../../components/CustomCard';
@@ -21,14 +21,8 @@ const Projects = () => {
   // dispatch
   const dispatch = useDispatch();
 
-  // useEffect(() => {
-  //   dispatch(loadProjects());
-  // }, []);
-
-  const projects = useLoadData(loadProjects, getProjects);
-
   // selectors
-  // const projects = useSelector(getProjects) || [];
+  const projects = useLoadData(loadProjects, getProjects);
 
   // dialog actions
   const _openDialog = () => setOpenDialog(true);

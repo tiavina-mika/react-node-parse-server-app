@@ -9,7 +9,8 @@ import { Divider, Drawer, IconButton, List, Theme, useTheme } from '@material-ui
 
 import RootMenuItem from './RootMenuItem';
 
-import { goToDashboard, logout } from '../../actions/app';
+import { goToDashboard } from '../../actions/app';
+import { logout } from '../../actions/auth';
 import { getCurrentUser } from '../../reducers/app';
 import { goToProjects } from '../../actions/projects';
 

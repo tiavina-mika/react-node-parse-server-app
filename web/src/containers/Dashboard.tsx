@@ -40,7 +40,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 	content: {
 		composes: 'flexRow center flexCenter flex1',
 		minHeight: '100vh',
-		backgroundColor: blue[600],
+		backgroundColor: theme.palette.primary.main,
 		flexGrow: 1,
 		padding: theme.spacing(3),
 		transition: theme.transitions.create(['width', 'margin'], {

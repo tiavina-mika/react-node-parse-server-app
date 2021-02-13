@@ -50,7 +50,7 @@ export function getParseServerUrl(forceProd = false) {
  * @param name (default : 'password') the name of the field in errors
  * @returns {String | Object} if errors is passed, it returns it, otherwise it returns the eventual error message
  */
-export function validatePassword(password: string, errors: any[], name: any = 'password') {
+export const validatePassword = (password: string, errors: any[], name: any = 'password') => {
   // ---- errorMessage ----//
   let errorMessage;
   if (password == null || password.length < 8) {
@@ -66,16 +66,16 @@ export function validatePassword(password: string, errors: any[], name: any = 'p
   } 
   return errorMessage;
 	
-}
+};
 
 // --------------------------------------------------------------------//
 // ----------------------- Parsers/Formatter --------------------------//
 // --------------------------------------------------------------------//
 // to capitalize only first letter
-export function capitalizeFirstLetter(string: any) {
+export const capitalizeFirstLetter = (string: string) => {
   if (!string || typeof string !== 'string' || (string && string.trim().length === 0)) return '';
   return string.charAt(0).toUpperCase() + string.slice(1);
-}
+};
 /**
  * boolean to string
  * @param booleanValue
@@ -90,7 +90,7 @@ export const booleanFormatter = (booleanValue: boolean): string => booleanValue 
  */
 export const toBoolean = (value: any) => typeof value === 'boolean' ? value : value === 'true';
 
-export function toDate(momentOrDateOrString: any) {
+export const toDate = (momentOrDateOrString: any) => {
   if (momentOrDateOrString == null) {
     return undefined;
   } if (typeof momentOrDateOrString === 'string') {
@@ -105,8 +105,8 @@ export function toDate(momentOrDateOrString: any) {
   } 
   return momentOrDateOrString;
 	
-}
-export function toMoment(momentOrDateOrString?: any) {
+};
+export const toMoment = (momentOrDateOrString?: any) => {
   if (momentOrDateOrString == null) {
     return moment();
   } if (moment.isMoment(momentOrDateOrString)) {
@@ -119,23 +119,23 @@ export function toMoment(momentOrDateOrString?: any) {
   // ---- date ----//
   return moment(momentOrDateOrString);
 	
-}
+};
 
-export function getDayName(dateOrString: any, capitalized = true) {
+export const getDayName = (dateOrString: any, capitalized = true) => {
   const date = toDate(dateOrString);
   let day = moment(date).format('dddd');
   capitalized && (day = capitalizeFirstLetter(day));
   return day;
-}
+};
 
-export function getMonthName(dateOrString: any, capitalized = true) {
+export const getMonthName = (dateOrString: any, capitalized = true) => {
   const date = toDate(dateOrString);
   let month = moment(date).format('MMMM');
   capitalized && (month = capitalizeFirstLetter(month));
   return month;
-}
+};
 
-export function formatDate(dateOrString: any, withDayName = true, withYear = true) {
+export const formatDate = (dateOrString: any, withDayName = true, withYear = true) => {
   if (!dateOrString) {
     return '';
   }
@@ -150,7 +150,7 @@ export function formatDate(dateOrString: any, withDayName = true, withYear = tru
   withYear && parts.push(date.getFullYear());
 
   return parts.join(' ');
-}
+};
 
 export const toIndexFormatString = (momentOrDateOrString: any) => toMoment(momentOrDateOrString).format('YYYYMMDD');
 export const toDateFormatString = (momentOrDateOrString: any) => toMoment(momentOrDateOrString).format('YYYY-MM-DD');
@@ -160,15 +160,15 @@ export function getLast3Month() {
 }
 
 
-export function toShortDateString(momentOrDateOrString: any, fullYear = false) {
+export const toShortDateString = (momentOrDateOrString: any, fullYear = false) => {
   const format = fullYear ? 'DD/MM/YYYY' : 'DD/MM/YY';
   return toMoment(momentOrDateOrString).format(format);
-}
-export function toFrDateString(momentOrDateOrString: any, withSlash = false) {
+};
+export const toFrDateString = (momentOrDateOrString: any, withSlash = false) => {
   const strFormat = withSlash ? 'DD/MM/YYYY' : 'DD MMMM YYYY';
   return toMoment(momentOrDateOrString).format(strFormat);
-}
-export function toFrDateTimeString(momentOrDateOrString: any, withDoubleDots = true, withPreposition = false) {
+};
+export const toFrDateTimeString = (momentOrDateOrString: any, withDoubleDots = true, withPreposition = false) => {
   let dateTimeStr = toMoment(momentOrDateOrString).format('DD/MM/YY - HH:mm');
   if (!withDoubleDots) {
     dateTimeStr = dateTimeStr.replace(':', 'h');
@@ -177,7 +177,7 @@ export function toFrDateTimeString(momentOrDateOrString: any, withDoubleDots = t
     dateTimeStr = dateTimeStr.replace('-', 'à');
   }
   return dateTimeStr;
-}
+};
 export const toLongDateString = (momentOrDateOrString: any) => toMoment(momentOrDateOrString).format('dddd DD MMMM YYYY');
 export const toTimeString = (momentOrDateOrString: any) => toMoment(momentOrDateOrString).format('HH:mm');
 
@@ -186,10 +186,10 @@ export const toTimeString = (momentOrDateOrString: any) => toMoment(momentOrDate
  * @param {date | String} date
  * @param {date | String} [limitDate]
  */
-export function isOutOfDate(date: any, limitDate: any) {
+export const isOutOfDate = (date: any, limitDate: any) => {
   if (!date) return false;
   return toDateFormatString(date) < toDateFormatString(limitDate);
-}
+};
 
 export const randomString = () => Math.random().toString(36).substring(2, 6) + Math.random().toString(36).substring(2, 6);
 // --------------------------------------------------------------------//
@@ -202,7 +202,7 @@ export const randomString = () => Math.random().toString(36).substring(2, 6) + M
  */
 export const toInt = (value: any) => value ? parseInt(value, 10) : 0;
 
-export function normalizeTo3Digits(value: any): any{
+export const normalizeTo3Digits = (value: any): any => {
   if (!value) return null;
   const onlyNums = value.replace(/[^\d]/g, '');
   // max 3 numbers
@@ -211,14 +211,14 @@ export function normalizeTo3Digits(value: any): any{
   }
   const newVal = onlyNums.slice(0, 3);
   return normalizeTo3Digits(newVal);
-}
+};
 
 /**
  * convert string to number
  * @param {string | number} value
  * @returns {number}
  */
-export function toNumber(value: any) {
+export const toNumber = (value: any) => {
   if (!value) {
     return 0;
   } 
@@ -226,7 +226,7 @@ export function toNumber(value: any) {
 	
   const onlyNums = value.replace(/[^\d]/g, '');
   return toInt(onlyNums);
-}
+};
 
 /**
  * to decimal number
@@ -234,7 +234,7 @@ export function toNumber(value: any) {
  * @param [afterComma]
  * @returns {number}
  */
-export function toDecimal(value: any, afterComma = 2): any {
+export const toDecimal = (value: any, afterComma = 2): any => {
   if ((!value && value !== 0) || value === 0 || value === '0.0' || value === 0.0) {
     return 0;
   }	
@@ -247,7 +247,7 @@ export function toDecimal(value: any, afterComma = 2): any {
     return toDecimal(res, afterComma); // to get a good format decimal
   }
   return 0;
-}
+};
 
 /**
  * normalize input type number

@@ -1,9 +1,9 @@
 export interface AppState {
   user: any | null;
   loading: boolean;
-  error?: string | null;
+  variant?: 'info' | 'success' | 'warning' | 'error' | null;
   message: string | null;
-  variant?: string| null;
+  error?: string | null;
   title?: string | null;
 }
 
