@@ -183,9 +183,7 @@ export const loadProjectThunk = (projectId: any): any => {
  */
 export const showProject = (projectId: string) => showParseObj('project', projectId);
 
-export const goToProjects = () => async (dispatch: AppDispatch) => {
-  dispatch(push('/dashboard'));
-};
+export const goToProjects = () => push('/dashboard/projects');
 // export function showProjectCreation() {
 // 	return push('/projectCreation');
 // }

@@ -110,21 +110,3 @@ export const logout = () => actionWithLoader(async (dispatch: AppDispatch) => {
   clearUserIntoLocalStorage();
   dispatch(push('/login'));
 });
-
-// export function onEnterUnknownRoute(store) {
-// 	return async (nextState, replace, callback) => {
-// 		try {
-// 			const getState = store.getState;
-// 			const user = getCurrentUser(getState());
-// 			if (user) {
-// 				showHome();
-// 			} else {
-// 				showLogin();
-// 			}
-// 			callback();
-// 		} catch (error) {
-// 			console.error(error);
-// 			callback(error);
-// 		}
-// 	}
-// }
