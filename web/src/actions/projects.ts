@@ -1,5 +1,7 @@
 import { push } from 'connected-react-router';
 import Parse from 'parse';
+import { uid } from 'uid';
+
 import { AppThunk, AppDispatch, RootState } from '../store';
 import { getValues, setValues } from '../utils/parseUtils';
 import { showParseObj, actionWithLoader  } from './utils';
@@ -12,7 +14,7 @@ import { getProject, getProjects } from '../reducers/projects';
 const Project = Parse.Object.extend('Project');
 
 const PROJECT_PROPERTIES: any = new Set([
-  'name',
+  'name', 'previewImage',
 ]);
 
 /**
@@ -21,14 +23,21 @@ const PROJECT_PROPERTIES: any = new Set([
  * @returns {Object}
  */
 export const getProjectValues = (project: any) => getValues(project, PROJECT_PROPERTIES);
+
 /**
  * set project values
  * @param project
  * @param values
  */
-export function setProjectValues(project: any, values: any) {
-  setValues(project, values, PROJECT_PROPERTIES);
-}
+export const setProjectValues = (project: any, values: any) => {
+  const newValues = { ...values };
+  if (values.previewImage) {
+    const parseFileTemplate = new Parse.File(uid(12), values.previewImage);
+    newValues.previewImage = parseFileTemplate;
+  }
+  setValues(project, newValues, PROJECT_PROPERTIES);
+};
+
 // --------------------------------------------------------//
 // --------------------- CRUD actions ---------------------//
 // --------------------------------------------------------//

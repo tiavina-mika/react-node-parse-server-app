@@ -81,6 +81,8 @@ const init = () => {
   // parse application/json
   app.use(bodyParser.json());
 
+	app.use(express.static('public'));
+
   //--------------------------//
 	//---- https forwarding ----//
 	//--------------------------//

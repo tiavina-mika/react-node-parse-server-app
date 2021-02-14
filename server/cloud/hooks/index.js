@@ -4,4 +4,5 @@
 /**
  * all functions we have to export should be moved into "core"
  */
-require('./users');;
+require('./users');
+require('./projects');

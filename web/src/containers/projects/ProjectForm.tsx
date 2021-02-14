@@ -3,6 +3,7 @@ import { reduxForm } from 'redux-form';
 import { makeStyles } from '@material-ui/core/styles';
 
 import FormField from '../../components/form/FormField';
+import DropFileUploader from '../../components/form/DropFileUploader';
 
 const useStyles = makeStyles({
   root: {
@@ -21,6 +22,13 @@ const ProjectForm = ({ handleSubmit }: Props) => {
   return (
     <form className={classes.root} onSubmit={handleSubmit}>
       <FormField label='Nom' name='name' fullWidth />
+
+      <FormField
+				label='Image Preview'
+        name='previewImage'
+        component={DropFileUploader}
+        fullWidth
+      />
       <input type='submit' />
     </form>
   );
