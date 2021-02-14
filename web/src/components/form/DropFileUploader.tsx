@@ -86,7 +86,7 @@ const DropFileUploader = ({
       className={classes.root}
     >
       {/* -------------------- input -------------------- */}
-      <input {...getInputProps({ multiple: false })} name={name} />
+      <input {...getInputProps({ multiple: maxFiles > 1 })} name={name} />
 
       {!currentFile && !isDragActive
       /* -------------------- placeholder -------------------- */
