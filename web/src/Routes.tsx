@@ -1,15 +1,17 @@
 import { Route, Switch, useRouteMatch } from 'react-router';
+import { useDispatch } from 'react-redux';
+import { useEffect } from 'react';
 
 import Dashboard from './containers/Dashboard';
 import Projects from './containers/projects/Projects';
 import Home from './containers/Home';
 import Login from './containers/login/Login';
 import Signup from './containers/signup/Signup';
-import { useLogin } from './hooks/useLogin';
+
+import { loginSuccess } from './actions/auth';
 
 const DashboardRoutes = () => {
   const { path } = useRouteMatch();
-	useLogin();
 
   return (
     <Switch>
@@ -25,27 +27,16 @@ const DashboardRoutes = () => {
   );
 };
 
-const AuthRoutes = () => {
-
-  return (
-    <Switch>
-      <Route path="/login">
-        <Login />
-      </Route>        
-      <Route path="/signup">
-        <Signup />
-      </Route>        
-    </Switch>
-  );
-};
-
 const Routes = () => {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    // dispatch the parse current user to the store
+    dispatch(loginSuccess());
+  }, [dispatch]);
 
   return (
       <Switch>
-        {/* <Route path="/"> */}
-          {/* <AuthRoutes /> */}
-        {/* </Route> */}
         <Route path="/" exact>
           <Home />
         </Route>  

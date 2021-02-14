@@ -42,7 +42,7 @@ import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
-import { Box, Theme } from '@material-ui/core';
+import { Box, FormHelperText, Theme } from '@material-ui/core';
 import clsx from 'clsx';
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -72,6 +72,7 @@ type Props = {
 	submitLabel?: string;
 	onSecondarySubmit?: () => void;
 	secondaryButtonLabel?: string;
+	error?: string;
 };
 const Auth = ({ 
 	children,
@@ -80,6 +81,7 @@ const Auth = ({
 	submitLabel,
 	onSecondarySubmit,
 	secondaryButtonLabel,
+	error,
 }: Props) => {
   const classes = useStyles();
 
@@ -94,6 +96,11 @@ const Auth = ({
 							</Typography>							
 						</Box>
 							<Box>
+								{error && (
+									<FormHelperText error>
+										{ error }
+									</FormHelperText>
+								)} 
 								{children}
 							</Box>
 					</CardContent>

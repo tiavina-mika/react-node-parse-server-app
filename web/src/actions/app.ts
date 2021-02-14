@@ -46,6 +46,4 @@ export const closeMessage = (): Close => ({ type: 'CLOSE_MESSAGE' });
 // ---------------------- Routing -------------------------//
 // --------------------------------------------------------//
 
-export const goToDashboard = () => async (dispatch: AppDispatch) => {
-  dispatch(push('/dashboard'));
-};
+export const goToDashboard = () => push('/dashoard');

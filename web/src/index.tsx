@@ -7,6 +7,7 @@ import { ConnectedRouter } from 'connected-react-router';
 import preset from 'jss-preset-default';
 import { create } from 'jss';
 import { HelmetProvider } from 'react-helmet-async';
+
 import reportWebVitals from './reportWebVitals';
 import { history, store } from './store';
 import Routes from './Routes';
@@ -19,7 +20,7 @@ const hostName = location.hostname;
 (window as any).LOCAL = hostName.indexOf('coovz') === -1 && hostName.indexOf('starry-embassy-283615') === -1;
 (window as any).PRODUCTION = hostName.indexOf('bo.coovz.com') !== -1;
 
-// ---------------------------------------------------//
+// --------------------------------------------------- //
 // ------------------- Parse init --------------------//
 // ---------------------------------------------------//
 const portWithColon = (window as any).LOCAL ? ':1338' : '';
@@ -46,6 +47,7 @@ ReactDOM.render(
   document.getElementById('root'),
 );
 
+// init();
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))
 // or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals

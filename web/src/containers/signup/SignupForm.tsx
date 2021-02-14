@@ -9,6 +9,11 @@ const validate = (values: SignupFormValues) => {
 	if (!values.email) {
 		errors.email = 'Required';
 	}
+	
+	if (!values.lastName) {
+		errors.lastName = 'Required';
+	}
+	
 	validatePassword(values.password, errors);
 	return errors;
 };

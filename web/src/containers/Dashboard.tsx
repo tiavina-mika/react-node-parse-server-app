@@ -15,6 +15,7 @@ import {
 	getMessage, getMessageVariant, getTitle,
 } from '../reducers/app';
 import Menu from '../components/menu/Menu';
+import { useIsAuth } from '../hooks/useIsAuth';
 
 export const drawerWidthOpen: number = 240;
 export const drawerWidthClosed: number = 70;
@@ -60,6 +61,8 @@ const Dashboard = ({ children }: Props) => {
 
 	// dispatch
 	const dispatch = useDispatch();
+
+	useIsAuth();
 
 	// selectors
 	const title = useSelector(getTitle);

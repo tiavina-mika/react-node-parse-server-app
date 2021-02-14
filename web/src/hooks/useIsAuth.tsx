@@ -1,18 +1,14 @@
 import { push } from 'connected-react-router';
 import Parse from 'parse';
 import { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 
-import { clearUserIntoLocalStorage, loginSuccess, retrieveUserFromLocalStorage } from '../actions/auth';
+import { clearUserIntoLocalStorage, retrieveUserFromLocalStorage } from '../actions/auth';
 
 /* eslint-disable react/jsx-closing-tag-location */
-export const useLogin = () => {
-	// dispatch
-	// const store = useStore();
-
+export const useIsAuth = () => {
   // dispatch
 	const dispatch = useDispatch();
-	const state = useSelector(state => state);
 
 	useEffect(() => {
 		const init = async () => {
@@ -22,16 +18,6 @@ export const useLogin = () => {
 
 			try {
 				currentUser = Parse.User.current(); // it can throw (rarely)
-				if (currentUser) {
-					// is the session valid ? (some issues might happen)
-					try {
-						await Parse.Session.current();
-					} catch (err) {
-						console.log('Error retrieving the session object => 400 but, in fact, invalid token => logout');
-						currentUser = null;
-						throw new Error('Bad session');
-					}
-				}
 			} catch (err) {
 				const invalidSession = err.message === 'Bad session';
 				if (invalidSession) {
@@ -63,12 +49,9 @@ export const useLogin = () => {
 				}
 			}
 
-			if (!currentUser) {
-				dispatch(push('/login'));
-			} else {
-				await loginSuccess()(dispatch, state);
-			}
+			if (currentUser) return;
+			dispatch(push('/login'));
 		};
 		init();
-	}, [state, dispatch]);
+	}, []);
 };

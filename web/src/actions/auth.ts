@@ -12,14 +12,9 @@ import {  AppThunk, AppDispatch } from '../store';
 // ---------------------- Routing -------------------------//
 // --------------------------------------------------------//
 
-export const goToLogin = () => async (dispatch: AppDispatch) => {
-  dispatch(push('/login'));
-};
+export const goToLogin = () => push('/login');
 
-export const goToSignup = () => async (dispatch: AppDispatch) => {
-  dispatch(push('/signup'));
-};
-
+export const goToSignup = () => push('/signup');
 
 // ---------------------------------------------------------//
 // ---------- fixing bug for Parse.User.Current() ----------//
@@ -69,6 +64,7 @@ export function updateUserIntoLocalStorage(user: any) {
 
 export const loginSuccess = (): any => actionWithLoader(async (dispatch: AppDispatch, getState: any) => {
   const currentUser = Parse.User.current() || getCurrentUser(getState);
+  
   if (currentUser && currentUser.getSessionToken()) {
     dispatch({
       type: 'LOGIN_SUCCESS',
@@ -77,15 +73,9 @@ export const loginSuccess = (): any => actionWithLoader(async (dispatch: AppDisp
 
     // update user into localStorage
     updateUserIntoLocalStorage(currentUser);
-
-    // we go to home with we were on the login path
-    // (not in case of an auto-login from index.js)
-    if (window.location.pathname.endsWith('login')) {
-      goToDashboard()(dispatch);
-    }
   } else {
     // retry login
-    goToLogin()(dispatch);
+    dispatch(goToLogin());
   }
 });
 
@@ -107,7 +97,7 @@ export const signup = (values: SignupFormValues): AppThunk => actionWithLoader(a
   dispatch({
     type: 'LOGOUT_SUCCESS',
   });
-  goToDashboard()(dispatch);
+  dispatch(goToDashboard());
 });
 
 
@@ -117,6 +107,8 @@ export const logout = () => actionWithLoader(async (dispatch: AppDispatch) => {
   dispatch({
     type: 'LOGOUT_SUCCESS',
   });
+  clearUserIntoLocalStorage();
+  dispatch(push('/login'));
 });
 
 // export function onEnterUnknownRoute(store) {
