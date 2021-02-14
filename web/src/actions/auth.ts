@@ -67,7 +67,7 @@ export function updateUserIntoLocalStorage(user: any) {
   localStorage.setItem(currentUserPath, userData);
 }
 
-export const loginSuccess = (): AppThunk => actionWithLoader(async (dispatch: AppDispatch, getState: any) => {
+export const loginSuccess = (): any => actionWithLoader(async (dispatch: AppDispatch, getState: any) => {
   const currentUser = Parse.User.current() || getCurrentUser(getState);
   if (currentUser && currentUser.getSessionToken()) {
     dispatch({
@@ -85,34 +85,16 @@ export const loginSuccess = (): AppThunk => actionWithLoader(async (dispatch: Ap
     }
   } else {
     // retry login
-    // showLogin();
+    goToLogin()(dispatch);
   }
 });
 
-export const login = (username: string, password: string): AppThunk => actionWithLoader(async (dispatch: AppDispatch, getState: any): Promise<void> => {
-  await Parse.User.logIn(username, password);
-  const currentUser = Parse.User.current() || getCurrentUser(getState);
-  if (currentUser && currentUser.getSessionToken()) {
-    dispatch({
-      type: 'LOGIN_SUCCESS',
-      user: currentUser,
-    });
-
-    // update user into localStorage
-    updateUserIntoLocalStorage(currentUser);
-
-    // we go to home with we were on the login path
-    // (not in case of an auto-login from index.js)
-    if (window.location.pathname.endsWith('login')) {
-      dispatch(goToDashboard());
-    }
-  } else {
-    // retry login
-    // showLogin();
-  }
-  // await loginSuccess()(dispatch, getState);
-  dispatch(goToDashboard());
-});
+export const login = (username: string, password: string): AppThunk => 
+  actionWithLoader(async (dispatch: AppDispatch, getState: any): Promise<void> => {
+		await Parse.User.logIn(username, password);
+		await loginSuccess()(dispatch, getState);
+    dispatch(goToDashboard());
+	});
 
 export const signup = (values: SignupFormValues): AppThunk => actionWithLoader(async (dispatch: AppDispatch) => {
 	const isAlreadySavedUsername = await Parse.Cloud.run('isAlreadySavedUsername', { username: values.email });
