@@ -70,7 +70,6 @@ type Props = {
   headerPrimaryLabel?: string;
   okBtnClassName?: string;
   okBtnVariant?: 'text' | 'outlined' | 'contained' | undefined;
-  otherActions?: ReactNode;
 };
 
 const CustomCard = ({
@@ -86,7 +85,6 @@ const CustomCard = ({
   headerPrimaryLabel,
   okBtnClassName,
   okBtnVariant,
-  otherActions,
 }: Props) => {
 
   // styles
@@ -113,7 +111,6 @@ const CustomCard = ({
           {okLabel}
         </Button>
       )}
-      {otherActions}
     </div>
   );
 

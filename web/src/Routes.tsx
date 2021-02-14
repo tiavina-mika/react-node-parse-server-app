@@ -1,5 +1,4 @@
-import { Router, Route, Switch, useRouteMatch } from 'react-router';
-// import { useStore } from 'react-redux';
+import { Route, Switch, useRouteMatch } from 'react-router';
 import { createBrowserHistory } from 'history';
 
 import Dashboard from './containers/Dashboard';
@@ -42,10 +41,8 @@ const AuthRoutes = () => {
 };
 
 const Routes = () => {
-  // const store = useStore();
 
   return (
-    <Router history={history}>
       <Switch>
         <Route path="/">
           <AuthRoutes />
@@ -54,7 +51,6 @@ const Routes = () => {
           <DashboardRoutes />
         </Route>
       </Switch>
-    </Router>
   );
 };
 

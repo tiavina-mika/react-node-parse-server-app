@@ -1,13 +1,13 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { submit } from 'redux-form';
+import { push } from 'connected-react-router';
 
 import Auth from '../Auth';
-// import { signup } from '../../actions/app';
 import { getCurrentUser } from '../../reducers/app';
 import SignupForm from './SignupForm';
 import { SignupFormValues } from '../../types/auth';
-import { signup } from '../../actions/auth';
+import { logout, signup } from '../../actions/auth';
 
 const Signup = () => {
 	// dispatch
@@ -17,10 +17,11 @@ const Signup = () => {
 	const user = useSelector(getCurrentUser);
 
 	if (user) {
-		return null;
+		dispatch(logout());
 	}
 
 	const _submit = () => dispatch(submit('signup'));
+	const _goToLogin = () => dispatch(push('/login'));
 
 	const _signup = (values: SignupFormValues) => {
 		dispatch(signup({ ...values }));
@@ -31,7 +32,7 @@ const Signup = () => {
 			title='Création de compte'
 			onSubmit={_submit}
 			submitLabel="Créer"
-			onSecondarySubmit={() => {}}
+			onSecondarySubmit={_goToLogin}
 			secondaryButtonLabel="Se connecter"
 		>
 				<SignupForm onSubmit={_signup} />
