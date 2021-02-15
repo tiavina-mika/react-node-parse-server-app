@@ -9,6 +9,7 @@ import Login from './containers/login/Login';
 import Signup from './containers/signup/Signup';
 
 import { loginSuccess } from './actions/auth';
+import Profile from './containers/profile/Profile';
 
 const DashboardRoutes = () => {
   const { path } = useRouteMatch();
@@ -21,6 +22,9 @@ const DashboardRoutes = () => {
         </Route>
         <Route path={`${path}/projects`} exact>
           <Projects />
+        </Route>
+        <Route path={`${path}/profile`} exact>
+          <Profile />
         </Route>
       </Dashboard>            
     </Switch>

@@ -5,7 +5,7 @@ const Joi = require('joi');
 const Config = require('../../node_modules/parse-server/lib/Config');
 
 const validation = require('../utils/validation.js');
-const { parseFunction, fromBO, toDateString } = require('../utils/utils');
+const { parseFunction, fromBO, toDateString, capitalizeCase } = require('../utils/utils');
 const { encrypt, decrypt } = require('../utils/cryptoUtils');
 const roleUtils = require('../utils/roleUtils');
 const { subscriptionEvent, changePasswordLog } = require('../log');
@@ -86,6 +86,8 @@ Parse.Cloud.define('signUp', parseFunction(async request => {
 	user.set('username', email);
 	user.set('password', password);
 	user.set('email', email);
+	user.set('brandNew', true);
+
 	firstName && user.set('firstName', capitalizeCase(firstName));
 	lastName && user.set('lastName', lastName.toUpperCase());
 
@@ -337,57 +339,75 @@ Parse.Cloud.beforeDelete(Parse.User, async request => {
 	}
 });
 
+/**
+ * special resetPassword the removes the User's 'brandNew' attribute (used for invites)
+ */
+Parse.Cloud.define('resetPassword', parseFunction(async request => {
+	const sessionToken = request.user.getSessionToken();
+	//---- email in request ? ----//
+	const email = request.params.email;
+	if (!email) {
+		throw 'Missing email';
+	}
+
+	//---- user searching ----//
+	const user = await new Parse.Query(Parse.User)
+		.equalTo('username', email)
+		.first({ sessionToken });
+
+	if (!user) {
+		throw 'User not found with email ' + email;
+	}
+
+	//---- 'brandNew' removal ----//
+	if (user.get('brandNew')) {
+		user.unset('brandNew');
+		await user.save(null, { sessionToken });
+	}
+
+	//---- actual requestPasswordReset ----//
+	await Parse.User.requestPasswordReset(email);
+}));
+
 
 //---------------------------------------------------------------//
 //----------------------- Password/Login ------------------------//
 //---------------------------------------------------------------//
 // only itself and the master key can delete a user
 Parse.Cloud.define('changePassword', parseFunction(async request => {
-	const params = request.params;
-	//---- validation ----//
-	const result = Joi.validate(params, schemaForPasswordUpdate);
-	if (result.error) {
-		throw new Error(result.error.message);
-	}
-	const passwordErrorMessage = validation.validatePassword(params.newPassword);
-	if (passwordErrorMessage) {
-		throw new Error(passwordErrorMessage);
-	}
+	// if (!request.master) {
+	// 	throw new Error('Not a master');
+	// }
 
-	const { token, username, newPassword } = params;
-	// see src/Routers/PublicAPIRouter.js in parse-server
-	const config = Config.get(Parse.applicationId);
-	await config.userController.updatePassword(username, token, newPassword);
+	const email = request.params.email;
+	const password = request.params.password;
 
-	//---------------------------------------//
-	//--------- event log change password ----//
-	//----------------------------------------//	
-	const user = await new Parse.Query(Parse.User)
-		.equalTo('username', username)
-		.first(USE_MASTER_KEY); 
+	//---- schema validation ----//
+	validation.checkValue({
+		value: email,
+		propertyName: 'email',
+		schemaRule: schemaForUser.email
+	});
+	validation.checkValue({
+		value: password,
+		propertyName: 'password',
+		schemaRule: schemaForUser.password
+	});
 
-	if (user) {
-		await changePasswordLog(user);
-		// for user create from BO
-		const { firstName = '', lastName } = params;
-		firstName && user.set('firstName', firstName);
-		lastName && user.set('lastName', lastName);
-		// if (user.get('fromBo')) {
-		// 	await mailjet.sendMail({
-		// 		templateId: 227264,
-		// 		user,
-		// 		subject: firstName + ', c’est toujours vous le Chef !',
-		// 		variables: {
-		// 			firstname: firstName,
-		// 			MonitoringCategory: 'inscription'
-		// 		}
-		// 	});
-		// }
-		user.unset('fromBo');
-		await user.save(null, USE_MASTER_KEY);
+	//---- user retrieval ----//
+	const user  = await new Parse.Query(Parse.User)
+		.equalTo('email', email)
+		.first();
+
+	if (!user) {
+		throw new Error('User email not found');
 	}
 
+	//---- password update ----//
+	user.set('password', password);
+	await user.save(null, USE_MASTER_KEY);
 }));
+
 
 
 Parse.Cloud.define('decryptSessionToken', parseFunction(async request => {
@@ -405,8 +425,6 @@ Parse.Cloud.define('decryptSessionToken', parseFunction(async request => {
 
 	return { sessionToken };
 }));
-
-
 
 //---------------------------------------------------------------//
 //-------------- setting pointer user into order ----------------//

@@ -24,6 +24,7 @@ const Projects = () => {
   // selectors
   const projects = useLoadData(loadProjects, getProjects);
 
+  
   // dialog actions
   const _openDialog = () => setOpenDialog(true);
   const _closeDialog = () => setOpenDialog(false);

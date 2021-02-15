@@ -10,6 +10,8 @@ const MenuItemIcon = ({ name }: Props) => {
 	switch (name) {
 		case 'user':
 			icon = <CurrentUserIcon />; break;
+		case 'profile':
+			icon = <CurrentUserIcon />; break;	
 		case 'projects':
 			icon = <ImageIcon />; break;
 		case 'logout':

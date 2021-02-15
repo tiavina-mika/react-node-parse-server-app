@@ -1,10 +1,12 @@
 import { RootState } from '../store';
 import appReducer from './app';
 import projectReducer from './projects';
+import userReducer from './users';
 
 const appReducers = {
   app: appReducer, 
   projects: projectReducer,
+  users: userReducer,
 };
 
 export default appReducers;

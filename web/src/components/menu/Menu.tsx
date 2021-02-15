@@ -10,7 +10,7 @@ import { Divider, Drawer, IconButton, List, Theme, useTheme } from '@material-ui
 import RootMenuItem from './RootMenuItem';
 
 import { goToDashboard } from '../../actions/app';
-import { logout } from '../../actions/auth';
+import { goToProfile, logout } from '../../actions/auth';
 import { getCurrentUser } from '../../reducers/app';
 import { goToProjects } from '../../actions/projects';
 
@@ -83,7 +83,9 @@ const Menu = ({ pathName }: Props) => {
 			case 'projects':
 				dispatch(goToProjects());
 				break;
-				
+			case 'profile':
+				dispatch(goToProfile());
+				break;
 			default:
 				dispatch(goToDashboard);
 				break;
@@ -141,9 +143,15 @@ const Menu = ({ pathName }: Props) => {
 				<List className={classes.list}>
 					<MenuItem
 						name="user"
-						label={user ? user.get('username') : 'user'}
+						label={user ? user.get('lastName') : 'user'}
 					/>
 					<Divider />
+
+					<MenuItem
+						name='profile'
+						label='Profile'
+						selectedPathName='/profile'
+					/>
 
 					<MenuItem
 						name='projects'

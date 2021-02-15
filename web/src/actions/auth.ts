@@ -16,6 +16,8 @@ export const goToLogin = () => push('/login');
 
 export const goToSignup = () => push('/signup');
 
+export const goToProfile = () => push('/dashboard/profile');
+
 // ---------------------------------------------------------//
 // ---------- fixing bug for Parse.User.Current() ----------//
 // ---------------------------------------------------------//
@@ -63,7 +65,7 @@ export function updateUserIntoLocalStorage(user: any) {
 }
 
 export const loginSuccess = (): any => actionWithLoader(async (dispatch: AppDispatch, getState: any) => {
-  const currentUser = Parse.User.current() || getCurrentUser(getState);
+  const currentUser = Parse.User.current() || getCurrentUser(getState());
   
   if (currentUser && currentUser.getSessionToken()) {
     dispatch({
@@ -82,7 +84,7 @@ export const loginSuccess = (): any => actionWithLoader(async (dispatch: AppDisp
 export const login = (username: string, password: string): AppThunk => 
   actionWithLoader(async (dispatch: AppDispatch, getState: any): Promise<void> => {
 		await Parse.User.logIn(username, password);
-		await loginSuccess()(dispatch, getState);
+		await loginSuccess()(dispatch, getState());
     dispatch(goToDashboard());
 	});
 
