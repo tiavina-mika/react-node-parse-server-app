@@ -1,0 +1,1 @@
+export const maxProjectImages: number = 10;

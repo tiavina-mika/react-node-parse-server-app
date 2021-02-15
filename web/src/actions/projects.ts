@@ -14,7 +14,7 @@ import { getProject, getProjects } from '../reducers/projects';
 const Project = Parse.Object.extend('Project');
 
 const PROJECT_PROPERTIES: any = new Set([
-  'name', 'previewImage',
+  'name', 'previewImage', 'images',
 ]);
 
 /**
@@ -32,8 +32,18 @@ export const getProjectValues = (project: any) => getValues(project, PROJECT_PRO
 export const setProjectValues = (project: any, values: any) => {
   const newValues = { ...values };
   if (values.previewImage) {
-    const parseFileTemplate = new Parse.File(uid(12), values.previewImage);
-    newValues.previewImage = parseFileTemplate;
+    const parseFile = new Parse.File(uid(12), values.previewImage);
+    newValues.previewImage = parseFile;
+  }
+
+  // multiple images
+  if (values.images) {
+    const newImages: any[] = [];
+    values.images.forEach((image: any) => {
+      const newParseFile = new Parse.File(uid(12), image);
+      newImages.push(newParseFile);
+    });
+    newValues.images = newImages;
   }
   setValues(project, newValues, PROJECT_PROPERTIES);
 };
