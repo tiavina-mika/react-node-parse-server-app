@@ -1,7 +1,7 @@
 "use strict";
 
 const fs = require('fs-extra');
-const path = require('path');
+const slugify = require('slugify');
 
 const { projectsImagesDir } = require('../../utils/constants');
 const { isDirty, parseFunction } = require('../utils/utils');
@@ -12,6 +12,9 @@ const { isDirty, parseFunction } = require('../utils/utils');
 Parse.Cloud.beforeSave('Project', 
 	parseFunction(async request => {
 		const project = request.object;
+
+    const slug = slugify(project.get('name'));
+    project.set('slug', slug);
 
     /** file deleted from disk */
     if (project.get('deleted')) {
@@ -29,7 +32,7 @@ Parse.Cloud.beforeSave('Project',
 		if (isDirty(project, 'previewImage')) {
       const previewImage = project.get('previewImage');
       const file = await Parse.Cloud.httpRequest({ url: previewImage.url() });
-      const fileName = project.get('name').toLowerCase() + '_' + previewImage.name();
+      const fileName = slug + '_' + previewImage.name();
 
       const fileType = file.headers['content-type'].split('/')[0];
 
