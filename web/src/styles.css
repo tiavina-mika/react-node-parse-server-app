@@ -71,7 +71,7 @@ h2 {
 input:-webkit-autofill { /* removes the ugly yellow bg when autofilled */
 	box-shadow: 0 0 0 1000px white inset;
 }
-input[type=submit] {
+input:not(#changePassword)[type=submit] {
 	visibility: hidden;
   padding: 0;
   margin: 0;

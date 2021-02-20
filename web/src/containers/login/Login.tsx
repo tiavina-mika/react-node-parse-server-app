@@ -2,8 +2,7 @@ import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { submit } from 'redux-form';
 import { push } from 'connected-react-router';
-import { FormHelperText } from '@material-ui/core';
-import Parse from 'parse';
+import { useLocation } from 'react-router';
 
 import Auth from '../Auth';
 import LoginForm from './LoginForm';
@@ -16,12 +15,14 @@ const Login = () => {
 	// dispatch
 	const dispatch = useDispatch();
 
+	const location = useLocation();
+
 	// selectors
 	const user = useSelector(getCurrentUser);
 	const error = useSelector(getError);
 
 	// redirection
-	if (user) {
+	if (user && location.pathname !== '/login') {
 		dispatch(goToDashboard());
 		return null;
 	}

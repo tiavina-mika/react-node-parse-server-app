@@ -70,7 +70,7 @@ const validatePassword = (password, required = true) => {
  * @param propertyName just for the eventual error
  */
 const checkValue = ({value, schemaRule, propertyName}) => {
-	Joi.validate(value, schemaRule, err => {
+	schemaRule.validate(value, schemaRule, err => {
 		if (err) {
 			const detail = err.details[0];
 			throw new Error("Error with the property '" + propertyName + "' and the value '" + detail.context.value + "' : " + detail.message);

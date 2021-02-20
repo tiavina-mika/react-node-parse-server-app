@@ -5,7 +5,6 @@ import { User } from '../../types/user';
 
 type Props = { currentUser: User };
 const UserInfos = ({ currentUser }: Props) => {
-  console.log('currentUser: ', currentUser);
 
   const infos = (label: string, value: string): ReactNode => (
     <Box display="flex">

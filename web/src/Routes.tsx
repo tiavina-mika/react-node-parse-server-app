@@ -11,6 +11,7 @@ import { loginSuccess } from './actions/auth';
 import Profile from './containers/profile/Profile';
 import PrivateRoutes from './PrivateRoutes';
 import Logout from './containers/Logout';
+import ChangePassword from './containers/profile/ChangePassword';
 
 
 const Routes = () => {
@@ -35,6 +36,7 @@ const Routes = () => {
         <PrivateRoutes path="/dashboard" component={Home} exact />
         <PrivateRoutes path="/dashboard/projects" component={Projects} exact />
         <PrivateRoutes path="/dashboard/profile" component={Profile} exact />
+        <PrivateRoutes path="/dashboard/changer-mot-de-passe" component={ChangePassword} exact />
 
         <Route path="/logout" component={Logout} />
       </Switch>

@@ -9,7 +9,6 @@ const Profile = () => {
 
   // selectors
   const currentUser = useSelector(getCurrentUser);
-  console.log('currentUser 1: ', currentUser);
 
   return (
     <>
@@ -22,13 +21,6 @@ const Profile = () => {
         headerPrimaryLabel="Nouveau Projet"
         fullScreen
       />
-      {/* <ModalDialog
-        title="Ajouter nouveau Projet"
-        content={<ProjectForm onSubmit={_createProject} />}
-        isVisible={openDialog}
-        onConfirm={_submit}
-        onClose={_closeDialog} 
-      /> */}
     </>
   );
 };

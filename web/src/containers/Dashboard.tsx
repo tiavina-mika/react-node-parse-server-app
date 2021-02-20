@@ -1,4 +1,4 @@
-import React, { Fragment, useState, useEffect, ReactNode } from 'react';
+import React, { useState, useEffect, ReactNode } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Helmet } from 'react-helmet-async';
 import { makeStyles, Theme } from '@material-ui/core/styles';
@@ -10,12 +10,10 @@ import SnackbarContentWrapper from '../components/SnackbarContentWrapper';
 
 import { closeMessage } from '../actions/app';
 import {
-	// getCurrentUser,
 	getLoading,
 	getMessage, getMessageVariant, getTitle,
 } from '../reducers/app';
 import Menu from '../components/menu/Menu';
-import { useIsAuth } from '../hooks/useIsAuth';
 
 export const drawerWidthOpen: number = 240;
 export const drawerWidthClosed: number = 70;
@@ -113,7 +111,7 @@ const Dashboard = ({ children }: Props) => {
 			<Snackbar
 				anchorOrigin={{
 					vertical: 'bottom',
-					horizontal: 'left',
+					horizontal: 'center',
 				}}
 				open={message != null}
 				autoHideDuration={4000}

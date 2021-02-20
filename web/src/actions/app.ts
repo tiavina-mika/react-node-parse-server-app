@@ -1,5 +1,7 @@
 import { push } from 'connected-react-router';
+
 import {  AppThunk, AppDispatch } from '../store';
+import { Variant } from '../types/app.d';
 
 /* eslint-disable @typescript-eslint/no-use-before-define */
 const CONNECTION_FAILED = 'Votre connexion semble dégradée, vérifiez-là puis actualisez la page.';
@@ -33,10 +35,11 @@ export const closeError = (): Close => ({ type: 'CLOSE_ERROR' });
  * load coupon feedback
  * @param {string} message
  */
-export const showMessage = (message: string): AppThunk => dispatch => {
+export const showMessage = (message: string, variant: Variant): AppThunk => dispatch => {
   dispatch({
     type: 'MESSAGE',
     message,
+    variant,
   });
 };
 

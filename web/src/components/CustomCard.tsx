@@ -57,6 +57,7 @@ type Props = {
 	title?: string;
 	titleClassName?: any;
 	content: ReactNode;
+	otherHeaderActionButtons?: ReactNode;
 	contentClassName?: any;
 	withActionButtons?: boolean;
 	actions?: ReactNode;
@@ -78,6 +79,7 @@ const CustomCard = ({
   content, contentClassName,
   okAction, okLabel = 'Valider',
   actions, cancelAction,
+  otherHeaderActionButtons,
   withActionButtons,
   actionClassName,
   cancelLabel = 'Annuler',
@@ -142,6 +144,7 @@ const CustomCard = ({
                   {headerPrimaryLabel}
                 </Button>
               )}
+              {otherHeaderActionButtons && otherHeaderActionButtons}
             </>
           )}
         />

@@ -15,6 +15,9 @@ const useStyles = makeStyles({
   subContentValue: {
     marginLeft: '-15px',
   },
+  asterix: {
+    color: 'red',
+  },
 });
 
 type Props = {
@@ -26,6 +29,7 @@ type Props = {
   containerClassName?: string;
   horizontal?: boolean; // row is already taken by material-ui's FormGroup
   fullWidth?: boolean;
+  required?: boolean;
   subContent?: boolean;
   component?: any;
   suffix?: string;
@@ -46,6 +50,7 @@ const FormField = ({
   component,
   suffix = '',
   children,
+  required,
   ...otherProps
 }: Props) => {
   // styles
@@ -75,13 +80,15 @@ const FormField = ({
       )}
       >
         <FormLabel classes={{ root: labelClassName }}>
-          {label}
+          {label} 
+          {required && <span className={classes.asterix}> *</span>}
         </FormLabel> 
         <Field
           name={name}
           label={label}
           fullWidth={fullWidth}
           component={usedComponent}
+          required={required}
           {...otherProps}
           className={clsx(subContent && classes.subContentValue, valueClassName)}
           endAdornment={(

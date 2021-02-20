@@ -2,7 +2,6 @@
 
 const moment = require('moment');
 const Joi = require('joi');
-const Config = require('../../node_modules/parse-server/lib/Config');
 
 const validation = require('../utils/validation.js');
 const { parseFunction, fromBO, toDateString, capitalizeCase } = require('../utils/utils');
@@ -12,13 +11,19 @@ const { subscriptionEvent, changePasswordLog } = require('../log');
 
 const regexEmail = new RegExp(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/);
 
-const schemaForUser = {
+const schemaForUser = Joi.object({
 	firstName: Joi.string().optional(),
 	lastName: Joi.string().required(),
 	email: Joi.string().regex(regexEmail).required(),
 	username: Joi.string().min(4).max(100).required(),
 	password: Joi.any() // later checked using validatePassword
-};
+});
+
+const schemaForChangePassword = Joi.object({
+	email: Joi.string().regex(regexEmail).required(),
+	password: Joi.string().min(8).max(45).required(),
+	confirmedPassword: Joi.ref('password'),
+});
 
 const schemaForPasswordUpdate = {
 	token: Joi.string().required(),
@@ -375,24 +380,15 @@ Parse.Cloud.define('resetPassword', parseFunction(async request => {
 //---------------------------------------------------------------//
 // only itself and the master key can delete a user
 Parse.Cloud.define('changePassword', parseFunction(async request => {
-	// if (!request.master) {
-	// 	throw new Error('Not a master');
-	// }
-
 	const email = request.params.email;
 	const password = request.params.password;
-
-	//---- schema validation ----//
-	validation.checkValue({
-		value: email,
-		propertyName: 'email',
-		schemaRule: schemaForUser.email
-	});
-	validation.checkValue({
-		value: password,
-		propertyName: 'password',
-		schemaRule: schemaForUser.password
-	});
+	const confirmedPassword = request.params.confirmPassword;
+	
+	schemaForChangePassword.validate({
+		email,
+		password,
+		confirmedPassword,
+	})
 
 	//---- user retrieval ----//
 	const user  = await new Parse.Query(Parse.User)
@@ -405,9 +401,9 @@ Parse.Cloud.define('changePassword', parseFunction(async request => {
 
 	//---- password update ----//
 	user.set('password', password);
-	await user.save(null, USE_MASTER_KEY);
+	const newUser = await user.save(null, USE_MASTER_KEY);
+	return newUser;
 }));
-
 
 
 Parse.Cloud.define('decryptSessionToken', parseFunction(async request => {

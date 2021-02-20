@@ -1,7 +1,8 @@
+export type Variant = 'info' | 'success' | 'warning' | 'error';
 export interface AppState {
   user: any | null;
   loading: boolean;
-  variant?: 'info' | 'success' | 'warning' | 'error' | null;
+  variant?: Variant | null;
   message: string | null;
   error?: string | null;
   title?: string | null;

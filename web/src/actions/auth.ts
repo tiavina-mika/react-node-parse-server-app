@@ -1,12 +1,13 @@
 import { push } from 'connected-react-router';
 import Parse from 'parse';
 
-import { SignupFormValues } from '../types/auth.d';
+import { RootState, AppThunk, AppDispatch } from '../store';
+import { ChangePasswordFormValues, SignupFormValues } from '../types/auth.d';
+
 import { actionWithLoader } from './utils';
-import { goToDashboard, showError } from './app';
+import { goToDashboard, showError, showMessage } from './app';
 
 import { getCurrentUser } from '../reducers/app';
-import {  AppThunk, AppDispatch } from '../store';
 
 // --------------------------------------------------------//
 // ---------------------- Routing -------------------------//
@@ -111,4 +112,37 @@ export const logout = () => actionWithLoader(async (dispatch: AppDispatch) => {
   });
   clearUserIntoLocalStorage();
   dispatch(push('/login'));
+});
+
+export const changePassword = (values: ChangePasswordFormValues): AppThunk => actionWithLoader(async (dispatch: AppDispatch, getState: () => RootState) => {
+  const currentUser = getCurrentUser(getState());
+
+	const isAlreadySavedUsername = await Parse.Cloud.run('isAlreadySavedUsername', { username: currentUser.get('email') });
+
+  if (!isAlreadySavedUsername) {
+    showError('Account does not exist')(dispatch);
+    dispatch(showMessage(
+      'Account does not exist',
+      'error',
+    ));
+    return;
+  }
+
+	const newUser = await Parse.Cloud.run('changePassword', { 
+    email: currentUser.get('email'), 
+    password: values.newPassword,
+    confirmedPassword: values.newConfirmedpassword,
+  });
+
+  // logout()(dispatch);
+
+  // update user into localStorage
+  // updateUserIntoLocalStorage(newUser);
+  dispatch(login(newUser.get('email'), values.newPassword));
+  // dispatch(goToProfile());
+
+  dispatch(showMessage(
+    'Changement de mot de passe avec succès',
+    'success',
+  ));
 });
