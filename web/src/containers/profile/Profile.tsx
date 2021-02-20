@@ -1,31 +1,21 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import { Box, Typography } from '@material-ui/core';
 
 import CustomCard from '../../components/CustomCard';
 import { getCurrentUser } from '../../reducers/app';
+import UserInfos from './UserInfos';
 
 const Profile = () => {
 
   // selectors
-  const current = useSelector(getCurrentUser);
-
-  const content = (
-    <Box>
-      <Typography>
-        Email: 
-        {current.get('email')}
-        Name: 
-        {current.get('lastName')}
-      </Typography>
-    </Box>
-  );
+  const currentUser = useSelector(getCurrentUser);
+  console.log('currentUser 1: ', currentUser);
 
   return (
     <>
       <CustomCard
         title='Profile'
-        content={content}
+        content={<UserInfos currentUser={currentUser} />}
         withActionButtons={false}
         // actionHeaderButtons={<AddIconButton onAdd={_openDialog} />}
         // onHeaderPrimaryClick={_openDialog}

@@ -1,8 +1,7 @@
-import { Route, Switch, useRouteMatch } from 'react-router';
-import { useDispatch } from 'react-redux';
+import { Route, Switch } from 'react-router';
+import { useStore } from 'react-redux';
 import { useEffect } from 'react';
 
-import Dashboard from './containers/Dashboard';
 import Projects from './containers/projects/Projects';
 import Home from './containers/Home';
 import Login from './containers/login/Login';
@@ -10,49 +9,34 @@ import Signup from './containers/signup/Signup';
 
 import { loginSuccess } from './actions/auth';
 import Profile from './containers/profile/Profile';
+import PrivateRoutes from './PrivateRoutes';
+import Logout from './containers/Logout';
 
-const DashboardRoutes = () => {
-  const { path } = useRouteMatch();
-
-  return (
-    <Switch>
-      <Dashboard>
-        <Route path={path} exact>
-          <Home />
-        </Route>
-        <Route path={`${path}/projects`} exact>
-          <Projects />
-        </Route>
-        <Route path={`${path}/profile`} exact>
-          <Profile />
-        </Route>
-      </Dashboard>            
-    </Switch>
-  );
-};
 
 const Routes = () => {
-  const dispatch = useDispatch();
+  const store = useStore();
 
   useEffect(() => {
     // dispatch the parse current user to the store
-    dispatch(loginSuccess());
-  }, [dispatch]);
+    loginSuccess()(store.dispatch, store.getState);
+  }, [store]);
 
   return (
       <Switch>
         <Route path="/" exact>
           <Home />
         </Route>  
-        <Route path="/login">
+        <Route path="/login" exact>
           <Login />
         </Route>        
-        <Route path="/signup">
+        <Route path="/signup" exact>
           <Signup />
         </Route>  
-        <Route path="/dashboard">
-          <DashboardRoutes />
-        </Route>
+        <PrivateRoutes path="/dashboard" component={Home} exact />
+        <PrivateRoutes path="/dashboard/projects" component={Projects} exact />
+        <PrivateRoutes path="/dashboard/profile" component={Profile} exact />
+
+        <Route path="/logout" component={Logout} />
       </Switch>
   );
 };

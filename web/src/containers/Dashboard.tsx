@@ -62,8 +62,8 @@ const Dashboard = ({ children }: Props) => {
 	// dispatch
 	const dispatch = useDispatch();
 
-	useIsAuth();
-
+	// -------- Dispatch the current user when entering the dashboard ----------- //
+	// useIsAuth();
 	// selectors
 	const title = useSelector(getTitle);
 	const message = useSelector(getMessage);

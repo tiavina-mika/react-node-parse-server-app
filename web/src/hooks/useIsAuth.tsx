@@ -39,19 +39,19 @@ export const useIsAuth = () => {
 					}
 				}
 
-				if ((currentUser && !currentUser.equals(userFromLocalStorage as any)) || invalidSession) {
-					try {
-						await Parse.User.logOut();
+				// if ((currentUser && !currentUser.equals(userFromLocalStorage as any)) || invalidSession) {
+				// 	try {
+				// 		await Parse.User.logOut();
 
-					} catch (err2) {
-						// might happen, but swallowed
-					}
-				}
+				// 	} catch (err2) {
+				// 		// might happen, but swallowed
+				// 	}
+				// }
 			}
 
 			if (currentUser) return;
 			dispatch(push('/login'));
 		};
 		init();
-	}, []);
+	}, [dispatch]);
 };
