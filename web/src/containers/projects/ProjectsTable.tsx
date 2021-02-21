@@ -1,23 +1,17 @@
 import React, { useCallback, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { submit } from 'redux-form';
-import { makeStyles } from '@material-ui/core/styles';
 import { Column } from 'devextreme-react/data-grid';
 
 import { toMoment } from '../../utils/utils';
 import TableButtonsAction from '../../components/devExpressTable/TableButtonsAction';
 import Table from '../../components/devExpressTable/Table';
 import ModalDialog from '../../components/ModalDialog';
-
-import { deleteProject, getProjectValues, goToProjectEdit, updateProject } from '../../actions/projects';
 import CustomCell from '../../components/devExpressTable/CustomCell';
-import ProjectForm from './ProjectForm';
-import { Project } from '../../types/project';
 import DialogTitleIcon from '../../components/DialogTitleIcon';
-
-const useStyles = makeStyles({
-  root: {},
-});
+import ProjectForm from './ProjectForm';
+import { Project, ProjectFormValues } from '../../types/project';
+import { deleteProject, getProjectValues, goToProjectEdit, goToProjectPreview, updateProject } from '../../actions/projects';
 
 const columns: string[] = ['name', 'updatedAt', 'data'];
 
@@ -28,9 +22,6 @@ type Props = {
 const ProjectsTable = ({ rows }: Props) => {
   // state
   const [selectedData, setSelectedData] = useState<any>(null);
-
-  // styles
-  const classes = useStyles();
 
   // dispatch
   const dispatch = useDispatch();
@@ -45,7 +36,7 @@ const ProjectsTable = ({ rows }: Props) => {
   }, [rows]);
 
   // get initial values
-  const getInitialValues = useCallback(() => {
+  const getInitialValues = useCallback((): ProjectFormValues | undefined => {
     if (!selectedData) return;
 
     const projectValues = getProjectValues(selectedData);
@@ -73,28 +64,34 @@ const ProjectsTable = ({ rows }: Props) => {
 	};
 
   // save form values
-  const _save = async (values: any) => {
+  const _save = async (values: ProjectFormValues): Promise<void> => {
 		if (!values) return;
     await dispatch(updateProject(selectedData, values));
     handleCloseDialog();
   };
 	
   // go to project form edit page
-  const _goToProjectEdit =  (slug: any) => {
+  const _goToProjectEdit =  (slug: string) => {
     dispatch(goToProjectEdit(slug));
   };
 
+    // go to project form edit page
+    const _goToProjectPreview =  (slug: string) => {
+      dispatch(goToProjectPreview(slug));
+    };
+  
   // submit change
   const _submit = () => dispatch(submit('projectForm'));
 
   return (
-    <div className={classes.root}>
+    <div>
       <Table
         dataSource={getDataSource()}
-        // onSelectionChanged={onSelectionChanged}
+        actionColumnWidth={120}
         actionRender={(value: any) => (
           <TableButtonsAction 
 						onEdit={() => _openEditDialog(value.data)}
+						onPreview={() => _goToProjectPreview(value.data.data.get('slug'))}
             onDelete={() => handleDelete(value.data.data.id)}
             openDialog={!!rows.find(template => template.id === selectedData?.id)}
 						label={value.data.name}

@@ -15,3 +15,26 @@ export const useLoadData = (
 
     return data;
 };
+
+type Params = { 
+  action: () => void; 
+  state: any; 
+  params: string | number;
+};
+export const useLoadDataBy = ({
+  action,
+  state,
+  params,
+}: Params): any | any[] => {
+    // dispatch
+    const dispatch = useDispatch();
+    const data = useSelector(state);
+
+    useEffect(() => {
+      if (!params) return;
+      
+      dispatch(action());
+    }, [dispatch]);
+
+    return data;
+};

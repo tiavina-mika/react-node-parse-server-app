@@ -5,6 +5,7 @@ import { Button } from 'devextreme-react/button';
 import { Box } from '@material-ui/core';
 
 import ModalDialog from '../ModalDialog';
+import IconButton from '../IconButton';
 
 const useStyles = makeStyles({
   button: {
@@ -47,8 +48,7 @@ const TableButtonsAction = ({
   const classes = useStyles();
 
   // preview action
-  const handlePreview = ({ event }: any) => {
-    event.stopPropagation();
+  const handlePreview = () => {
     onPreview(item);
   };
 
@@ -82,10 +82,11 @@ const TableButtonsAction = ({
       className={clsx({ [classes.fullHeight]: fullHeight })}
     >
       {onPreview && (
-        <Button
-          icon="movetofolder"
-          onClick={handlePreview}
-          className={classes.button}
+        <IconButton 
+          onClick={handlePreview} 
+          type="open-new" 
+          color="default"
+          size="small"
         />
       )}
       {onEdit && (

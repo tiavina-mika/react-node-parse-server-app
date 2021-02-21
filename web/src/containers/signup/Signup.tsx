@@ -9,6 +9,7 @@ import SignupForm from './SignupForm';
 import { SignupFormValues } from '../../types/auth';
 import { signup } from '../../actions/auth';
 import { goToDashboard } from '../../actions/app';
+import { validateSignup } from '../../utils/validation';
 
 const Signup = () => {
 	// dispatch
@@ -29,8 +30,9 @@ const Signup = () => {
 	const _goToLogin = () => dispatch(push('/login'));
 
 	// submit
-	const _signup = (values: SignupFormValues) => {
-		dispatch(signup({ ...values }));
+	const _signup = (values: any) => {
+		validateSignup(values);
+		dispatch(signup(values));
 	};
 
 	return (

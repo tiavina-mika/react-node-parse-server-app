@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { reset, submit } from 'redux-form';
 import { useParams } from 'react-router';
 import { Box } from '@material-ui/core';
@@ -11,24 +11,24 @@ import ProjectForm from './ProjectForm';
 import { createProject, getProjectValues, goToProjectAdd, goToProjects, loadProject, updateProject, clearProject } from '../../actions/projects';
 import { getProject } from '../../reducers/projects';
 import { ProjectFormValues } from '../../types/project';
+import { useLoadDataBy } from '../../hooks/useLoadData';
 
 const ProjectInsert = () => {
-
-  // const [openDialog, setOpenDialog] =  useState<boolean>(false);
+  // route params
   const { slug }: any = useParams();
 
   // dispatch
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    if (!slug) return;
-    dispatch(loadProject(slug, true));
-  }, [dispatch]);
-
-  const project = useSelector(getProject);
+  // load data
+  const project = useLoadDataBy({
+    action: () => loadProject(slug, true),
+    state: getProject,
+    params: slug,
+  });
 
   // get initial values for edition
-  const getInitialValues = useCallback(() => {
+  const getInitialValues = useCallback((): ProjectFormValues | undefined => {
     if (!slug) return;
     const projectValues = getProjectValues(project);
     return {
@@ -72,26 +72,17 @@ const ProjectInsert = () => {
   );
 
   return (
-    <>
-      <CustomCard
-        fullScreen
-        title={slug ? 'Modifier ' + project?.get('name') : 'Nouveau project'}
-        content={<ProjectForm onSubmit={_save} initialValues={getInitialValues()} />}
-        okLabel="Enregistrer"
-        okAction={_submit}
-        withActionButtons
-        cancelAction={_reset}
-        actionButtonPosition='left'
-        otherHeaderActionButtons={otherHeaderActionButtons}
-      />
-      {/* // <ModalDialog
-      //   title="Ajouter nouveau Projet"
-      //   content={<ProjectForm onSubmit={_createProject} />}
-      //   isVisible={openDialog}
-      //   onConfirm={_submit}
-      //   onClose={_closeDialog} 
-      // /> */}
-    </>
+    <CustomCard
+      fullScreen
+      title={slug ? 'Modifier ' + project?.get('name') : 'Nouveau project'}
+      content={<ProjectForm onSubmit={_save} initialValues={getInitialValues()} />}
+      okLabel="Enregistrer"
+      okAction={_submit}
+      withActionButtons
+      cancelAction={_reset}
+      actionButtonPosition='left'
+      otherHeaderActionButtons={otherHeaderActionButtons}
+    />
   );
 };
 

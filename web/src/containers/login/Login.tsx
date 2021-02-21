@@ -10,6 +10,7 @@ import { login } from '../../actions/auth';
 import { getCurrentUser, getError } from '../../reducers/app';
 import { LoginFormValues } from '../../types/auth';
 import { goToDashboard } from '../../actions/app';
+import { validateLogin } from '../../utils/validation';
 
 const Login = () => {
 	// dispatch
@@ -31,7 +32,8 @@ const Login = () => {
 	const _submit = () => dispatch(submit('login'));
 
 	// submit
-	const _login = (values: LoginFormValues) => {
+	const _login = (values: any) => {
+		validateLogin(values);
 		dispatch(login(values.email, values.password));
 	};
 

@@ -13,6 +13,7 @@ import PrivateRoutes from './PrivateRoutes';
 import Logout from './containers/Logout';
 import ChangePassword from './containers/profile/ChangePassword';
 import ProjectInsert from './containers/projects/ProjectInsert';
+import ProjectPreview from './containers/projects/ProjectPreview';
 
 
 const Routes = () => {
@@ -35,11 +36,13 @@ const Routes = () => {
           <Signup />
         </Route>  
         <PrivateRoutes path="/dashboard" component={Home} exact />
-        <PrivateRoutes path="/dashboard/projects" component={Projects} exact />
         <PrivateRoutes path="/dashboard/profile" component={Profile} exact />
         <PrivateRoutes path="/dashboard/changer-mot-de-passe" component={ChangePassword} exact />
+
+        <PrivateRoutes path="/dashboard/projects" component={Projects} exact />
         <PrivateRoutes path="/dashboard/ajouter-projet" component={ProjectInsert} exact />
         <PrivateRoutes path="/dashboard/modifier-projet/:slug" component={ProjectInsert} exact />
+        <PrivateRoutes path="/dashboard/projet/:slug" component={ProjectPreview} exact />
 
         <Route path="/logout" component={Logout} />
       </Switch>

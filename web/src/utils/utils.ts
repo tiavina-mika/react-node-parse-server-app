@@ -44,28 +44,18 @@ export function getParseServerUrl(forceProd = false) {
 }
 
 /**
- *
- * @param password
- * @param errors (optional)
- * @param name (default : 'password') the name of the field in errors
- * @returns {String | Object} if errors is passed, it returns it, otherwise it returns the eventual error message
+ * get image url
+ * @param [type]
+ * @returns {string}
  */
-export const validatePassword = (password: string, errors: any[], name: any = 'password') => {
-  // ---- errorMessage ----//
-  let errorMessage;
-  if (password == null || password.length < 8) {
-    errorMessage = 'Votre mot de passe doit faire au moins 8 caractères.';
+export const getImageUrl = (type: 'project' | 'user') => {
+  const env = getEnv();
+  let serverHostName = 'http://localhost:1338/';
+  if (env !== 'LOCAL') {
+    serverHostName = 'http://localhost:1338/';
   }
 
-  // ---- errors ----//
-  if (errors) {
-    if (errorMessage) {
-      errors[name] = errorMessage;
-    }
-    return errors;
-  } 
-  return errorMessage;
-	
+  return `${serverHostName}images/${type}s/`;	
 };
 
 // --------------------------------------------------------------------//

@@ -5,15 +5,14 @@ import { useToggle } from 'react-use';
 
 import CustomCard from '../../components/CustomCard';
 import ModalDialog from '../../components/ModalDialog';
+import DialogTitleIcon from '../../components/DialogTitleIcon';
 
 import ProjectsTable from './ProjectsTable';
 import ProjectForm from './ProjectForm';
 
-import { createProject, goToProjectAdd, loadProjects } from '../../actions/projects';
-
 import { getProjects } from '../../reducers/projects';
+import { createProject, goToProjectAdd, loadProjects } from '../../actions/projects';
 import { useLoadData } from '../../hooks/useLoadData';
-import DialogTitleIcon from '../../components/DialogTitleIcon';
 
 const Projects = () => {
   // states

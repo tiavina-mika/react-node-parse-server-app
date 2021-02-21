@@ -6,9 +6,10 @@ import CloseIcon from '@material-ui/icons/Close';
 import DeleteIcon from '@material-ui/icons/Delete';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import OpenInNewIcon from '@material-ui/icons/OpenInNew';
+import EditIcon from '@material-ui/icons/Edit';
 
 type Props = { 
-  onClick: () => void; 
+  onClick: (value?: any) => void; 
   color?: 'default' | 'primary'| 'secondary'; 
   className?: string; 
   type?: string ;
@@ -17,7 +18,7 @@ type Props = {
 
 const IconButton = ({ 
   onClick, 
-  color = 'primary', 
+  color = 'default', 
   className, 
   type, 
   size = 'medium',
@@ -27,30 +28,26 @@ const IconButton = ({
     let Icon;
     switch (type) {
       case 'add':
-        Icon = <AddIcon />;
-      break;
+        Icon = <AddIcon />; break;
       case 'list':
-        Icon = <ViewListIcon />;
-      break;
+        Icon = <ViewListIcon />; break;
       case 'close':
-        Icon = <CloseIcon />;
-      break;
+        Icon = <CloseIcon />; break;
       case 'delete':
-        Icon = <DeleteIcon />;
-      break;
+        Icon = <DeleteIcon />; break;
       case 'preview':
-        Icon = <ChevronRightIcon />;
-      break;
+        Icon = <ChevronRightIcon />; break;
+      case 'edit':
+        Icon = <EditIcon />; break;
       case 'open-new':
-        Icon = <OpenInNewIcon />;
-      break;
-    
-    default:
-      Icon = <AddIcon />;
-    }
+        Icon = <OpenInNewIcon />; break;
+      default:
+        Icon = <AddIcon />;
+      }
 
     return Icon;
   }, [type]);
+  
   return (
     <MUIIconButton
       aria-label={type}

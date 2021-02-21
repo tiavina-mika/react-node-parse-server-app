@@ -1,22 +1,6 @@
 import { reduxForm } from 'redux-form';
 
-import { validatePassword } from '../../utils/utils';
 import FormField from '../../components/form/FormField';
-import { SignupFormValues } from '../../types/auth';
-
-const validate = (values: SignupFormValues) => {
-	const errors: any = {};
-	if (!values.email) {
-		errors.email = 'Required';
-	}
-	
-	if (!values.lastName) {
-		errors.lastName = 'Required';
-	}
-	
-	validatePassword(values.password, errors);
-	return errors;
-};
 
 type Props = { handleSubmit: any };
 const SignupForm = ({ handleSubmit } : Props) => {
@@ -34,5 +18,4 @@ const SignupForm = ({ handleSubmit } : Props) => {
 
 export default reduxForm({
 	form: 'signup',
-	validate,
 })(SignupForm);

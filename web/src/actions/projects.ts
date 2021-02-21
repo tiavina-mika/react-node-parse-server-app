@@ -232,3 +232,4 @@ export const showProject = (projectId: string) => showParseObj('project', projec
 export const goToProjects = () => push('/dashboard/projects');
 export const goToProjectAdd = () => push('/dashboard/ajouter-projet');
 export const goToProjectEdit = (slug: string) => push('/dashboard/modifier-projet/' + slug);
+export const goToProjectPreview = (slug: string) => push('/dashboard/projet/' + slug);
