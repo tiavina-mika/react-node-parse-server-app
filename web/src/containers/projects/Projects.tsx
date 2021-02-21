@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useDispatch } from 'react-redux';
 import { submit } from 'redux-form';
+import { useToggle } from 'react-use';
 
 import CustomCard from '../../components/CustomCard';
-import AddIconButton from '../../components/buttons/AddIconButton';
 import ModalDialog from '../../components/ModalDialog';
 
 import ProjectsTable from './ProjectsTable';
@@ -16,19 +16,14 @@ import { useLoadData } from '../../hooks/useLoadData';
 import DialogTitleIcon from '../../components/DialogTitleIcon';
 
 const Projects = () => {
-
   // states
-  const [openDialog, setOpenDialog] =  useState<boolean>(false);
+  const [on, toggle] =  useToggle(false);
 
   // dispatch
   const dispatch = useDispatch();
 
   // selectors
   const projects = useLoadData(loadProjects, getProjects);
-
-  // dialog actions
-  const _openDialog = () => setOpenDialog(true);
-  const _closeDialog = () => setOpenDialog(false);
 
   // go to project form add page
   const _goToProjectAdd = () => {
@@ -38,12 +33,12 @@ const Projects = () => {
   // save form values
   const _createProject = async (values: any) => {
     await dispatch(createProject(values));
+    toggle();
   };
 
   // submit form
   const _submit =  () => {
     dispatch(submit('projectForm'));
-    setOpenDialog(false);
   };
 
   return (
@@ -52,7 +47,7 @@ const Projects = () => {
         title='Liste des projets'
         content={<ProjectsTable rows={projects} />}
         withActionButtons={false}
-        onHeaderPrimaryClick={_openDialog}
+        onHeaderPrimaryClick={toggle}
         headerPrimaryLabel="Nouveau Projet"
         fullScreen
       />
@@ -60,9 +55,9 @@ const Projects = () => {
         title="Ajouter nouveau Projet"
         content={<ProjectForm onSubmit={_createProject} />}
         iconTitle={<DialogTitleIcon onClick={_goToProjectAdd} />}
-        isVisible={openDialog}
+        isVisible={on}
         onConfirm={_submit}
-        onClose={_closeDialog} 
+        onClose={toggle} 
       />
     </>
   );

@@ -10,7 +10,6 @@ import ProjectForm from './ProjectForm';
 
 import { createProject, getProjectValues, goToProjectAdd, goToProjects, loadProject, updateProject, clearProject } from '../../actions/projects';
 import { getProject } from '../../reducers/projects';
-import { validateProject } from '../../utils/validation';
 import { ProjectFormValues } from '../../types/project';
 
 const ProjectInsert = () => {
@@ -40,7 +39,6 @@ const ProjectInsert = () => {
 
   // save form values
   const _save = async (values: ProjectFormValues) => {
-    validateProject(values);
     if (slug) {
       await dispatch(updateProject(project, values));
       return;

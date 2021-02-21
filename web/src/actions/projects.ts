@@ -5,6 +5,7 @@ import { uid } from 'uid';
 import { AppThunk, AppDispatch, RootState } from '../store';
 import { getValues, setValues } from '../utils/parseUtils';
 import { showParseObj, actionWithLoader  } from './utils';
+import { validateProject } from '../utils/validation';
 
 import { getProject, getProjects } from '../reducers/projects';
 
@@ -57,6 +58,8 @@ export const setProjectValues = (project: any, values: any) => {
  * @returns {*}
  */
 export const createProject = (values: any): AppThunk => {
+  validateProject(values);
+
   return actionWithLoader(async (dispatch: AppDispatch, getState: () => RootState) => {
     const projects = getProjects(getState());
     const project = new Project();
@@ -96,6 +99,7 @@ export const updateProjectThunk = (project: any): any => {
  * @returns {*}
  */
 export const updateProject = (project: any, values: any): AppThunk => {
+  validateProject(values);
 
   return actionWithLoader(async (dispatch: AppDispatch, getState: () => RootState) => {
     setProjectValues(project, values);
