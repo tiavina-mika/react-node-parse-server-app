@@ -9,13 +9,15 @@ import ModalDialog from '../../components/ModalDialog';
 import ProjectsTable from './ProjectsTable';
 import ProjectForm from './ProjectForm';
 
-import { createProject, loadProjects } from '../../actions/projects';
+import { createProject, goToProjectAdd, loadProjects } from '../../actions/projects';
 
 import { getProjects } from '../../reducers/projects';
 import { useLoadData } from '../../hooks/useLoadData';
+import DialogTitleIcon from '../../components/DialogTitleIcon';
 
 const Projects = () => {
 
+  // states
   const [openDialog, setOpenDialog] =  useState<boolean>(false);
 
   // dispatch
@@ -24,17 +26,22 @@ const Projects = () => {
   // selectors
   const projects = useLoadData(loadProjects, getProjects);
 
-  
   // dialog actions
   const _openDialog = () => setOpenDialog(true);
   const _closeDialog = () => setOpenDialog(false);
 
+  // go to project form add page
+  const _goToProjectAdd = () => {
+    dispatch(goToProjectAdd());
+  };
+
+  // save form values
   const _createProject = async (values: any) => {
-    // create new project
     await dispatch(createProject(values));
   };
 
-  const _submit =  ()=>{
+  // submit form
+  const _submit =  () => {
     dispatch(submit('projectForm'));
     setOpenDialog(false);
   };
@@ -45,7 +52,6 @@ const Projects = () => {
         title='Liste des projets'
         content={<ProjectsTable rows={projects} />}
         withActionButtons={false}
-        // actionHeaderButtons={<AddIconButton onAdd={_openDialog} />}
         onHeaderPrimaryClick={_openDialog}
         headerPrimaryLabel="Nouveau Projet"
         fullScreen
@@ -53,6 +59,7 @@ const Projects = () => {
       <ModalDialog
         title="Ajouter nouveau Projet"
         content={<ProjectForm onSubmit={_createProject} />}
+        iconTitle={<DialogTitleIcon onClick={_goToProjectAdd} />}
         isVisible={openDialog}
         onConfirm={_submit}
         onClose={_closeDialog} 

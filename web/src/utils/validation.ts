@@ -1,38 +1,99 @@
 import { SubmissionError } from 'redux-form';
 
+import { previewImageMaxSize, previewImagesMaxSize } from './constants';
+import { ProjectFormValues } from '../types/project.d';
+import { ChangePasswordFormValues } from '../types/auth.d';
+
+type Validate = {
+	error: any;
+	name: string;
+	message: string;
+};
+const validate = ({ error, name, message }: Validate) => {
+	if (error) {
+		throw new SubmissionError({
+      [name]: message,
+		});
+	}
+};
+
 /**
- * promo banner's form validation
+ * change password form validation
  * @param {*} values 
  * @return string url 
  */
-export const validateChangePassword = (values: any) => {
-	if (!values.password) {
-		throw new SubmissionError({
-      password: 'Password required',
-		});
-	}
+export const validateChangePassword = (values: ChangePasswordFormValues) => {
+	// required password
+	validate({
+		error: !values.password,
+		name: 'password',
+		message: 'Password required',
+	});
 
-  if (!values.newPassword) {
-		throw new SubmissionError({
-      newPassword: 'New Password required',
-		});
-	}
+	// required new password
+	validate({
+		error: !values.newPassword,
+		name: 'newPassword',
+		message: 'New Password required',
+	});
 
-  if (values.newPassword && (values.newPassword.length < 8 || values.newPassword.length >= 45)) {
-		throw new SubmissionError({
-      newPassword: 'Password must be between 8 and 20 characters ',
-		});
-	}
+	// new password characters number
+	validate({
+		error: values.newPassword && (values.newPassword.length < 8 || values.newPassword.length >= 45),
+		name: 'newPassword',
+		message: 'Password must be between 8 and 45 characters',
+	});
 
-  if (!values.newConfirmedPassword) {
-		throw new SubmissionError({
-      newConfirmedPassword: 'Confirm your Password',
-		});
-	}
+	// new confirmed password required
+	validate({
+		error: !values.newConfirmedPassword,
+		name: 'newConfirmedPassword',
+		message: 'Confirm your Password',
+	});
 
-  if (values.newPassword !== values.newConfirmedPassword) {
-		throw new SubmissionError({
-      newConfirmedPassword: 'Password does not match',
+	// matched password
+	validate({
+		error: values.newPassword !== values.newConfirmedPassword,
+		name: 'newConfirmedPassword',
+		message: 'Password does not match',
+	});
+};
+
+/**
+ * project form validation
+ * @param {*} values 
+ * @return string url 
+ */
+export const validateProject = (values: ProjectFormValues) => {
+	// name required
+	validate({
+		error: !values.name,
+		name: 'name',
+		message: 'Name required',
+	});
+
+	// preview image required
+	validate({
+		error: !values.previewImage,
+		name: 'previewImage',
+		message: 'Preview image required',
+	});
+	
+	// preview image size max
+	validate({
+		error: values.previewImage && values.previewImage.size > previewImageMaxSize,
+		name: 'previewImage',
+		message: 'Image size max should be ' + previewImageMaxSize,
+	});
+	
+	// images size max
+	if (values.images) {
+		const imageMax = values.images.find((image:any): boolean => image.size > previewImagesMaxSize);
+		if (!imageMax) return;
+		validate({
+			error: imageMax.size > previewImagesMaxSize,
+			name: 'images',
+			message: 'Image size max should be ' + previewImagesMaxSize,
 		});
 	}
 };

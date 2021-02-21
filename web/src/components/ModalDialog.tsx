@@ -1,16 +1,23 @@
-import React from 'react';
-
+import React, { ReactNode } from 'react';
+import clsx from 'clsx';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogActions from '@material-ui/core/DialogActions';
 import { makeStyles } from '@material-ui/core/styles';
+
 import LoadingButton from './LoadingButton';
 
 const useStyles = makeStyles({
   dialogContainer: {
     minWidth: 600,
+  },
+  dialogTitle: {
+    '& > h2': {
+      display: 'flex',
+      justifyContent: 'space-between',
+    },
   },
   dialogContent: {
     composes: 'flexColumn stretch',
@@ -28,7 +35,7 @@ type Props = {
 	title: string;
 	content: any;
 	bsClass?: string;
-	inBtnAction?: boolean;
+	iconTitle?: ReactNode;
 	isVisible?: boolean;
 	onClose?: any;
 	onConfirm?: any;
@@ -39,13 +46,15 @@ type Props = {
 	className?: string;
 	loading?: boolean;
 	greenBtn?: boolean;
+  titleClassName?: string;
 };
 const ModalDialog = ({
   title, content, bsClass, isVisible = false,
   onClose, labelCancel = 'Annuler',
   onConfirm, labelConfirm = 'Valider',
   otherAction, labelOtherAction = '', loading = false,
-  className, greenBtn = false, inBtnAction = false,
+  className, greenBtn = false, iconTitle,
+  titleClassName,
 }: Props) => {
 
   // styles
@@ -58,8 +67,9 @@ const ModalDialog = ({
       onClose={onClose}
     >
       { !!title && (
-        <DialogTitle>
+        <DialogTitle classes={{ root: clsx(classes.dialogTitle, titleClassName) }}>
           {title}
+          {iconTitle}
         </DialogTitle>
       ) }
 

@@ -87,7 +87,7 @@ const Menu = ({ pathName }: Props) => {
 				dispatch(goToProfile());
 				break;
 			default:
-				dispatch(goToDashboard);
+				dispatch(goToDashboard());
 				break;
 		}
 	};

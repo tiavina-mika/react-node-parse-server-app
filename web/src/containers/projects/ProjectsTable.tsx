@@ -9,21 +9,21 @@ import TableButtonsAction from '../../components/devExpressTable/TableButtonsAct
 import Table from '../../components/devExpressTable/Table';
 import ModalDialog from '../../components/ModalDialog';
 
-import { deleteProject, getProjectValues, updateProject } from '../../actions/projects';
+import { deleteProject, getProjectValues, goToProjectEdit, updateProject } from '../../actions/projects';
 import CustomCell from '../../components/devExpressTable/CustomCell';
 import ProjectForm from './ProjectForm';
 import { Project } from '../../types/project';
+import DialogTitleIcon from '../../components/DialogTitleIcon';
 
 const useStyles = makeStyles({
   root: {},
 });
 
-const columns = ['name', 'updatedAt', 'data'];
+const columns: string[] = ['name', 'updatedAt', 'data'];
 
 type Props = {
 	rows: Project[];
 };
-
 
 const ProjectsTable = ({ rows }: Props) => {
   // state
@@ -55,35 +55,35 @@ const ProjectsTable = ({ rows }: Props) => {
 
   }, [selectedData]);
 
-
   // delete project
   const handleDelete = (projectId: string) => {
     const deletedData = rows.find((row) => row.id === projectId);
     dispatch(deleteProject(deletedData));
   };
 
-  // const onSelectionChanged = ({ selectedRowsData }: any) => {
-  //   const selectedData = selectedRowsData[0]; 
-  //   if (selectedData?.data) {
-  //     setSelectedData(selectedData.data);
-  //   }
-  // };
+  // close dialog
   const handleCloseDialog = () => {
     setSelectedData(null);
   };
 
-  	// open dialog
+  // open dialog
 	const _openEditDialog = (selectedData: any) => {
     if (!selectedData?.data) return;
 		setSelectedData(selectedData.data);
 	};
 
+  // save form values
   const _save = async (values: any) => {
 		if (!values) return;
     await dispatch(updateProject(selectedData, values));
     handleCloseDialog();
   };
 	
+  // go to project form edit page
+  const _goToProjectEdit =  (slug: any) => {
+    dispatch(goToProjectEdit(slug));
+  };
+
   // submit change
   const _submit = () => dispatch(submit('projectForm'));
 
@@ -120,6 +120,7 @@ const ProjectsTable = ({ rows }: Props) => {
         title={`Modifier - ${selectedData?.get('name')}`}
         content={<ProjectForm onSubmit={_save} initialValues={getInitialValues()} />}
         isVisible={!!rows.find(project => project.id === selectedData?.id)}
+        iconTitle={<DialogTitleIcon onClick={() => _goToProjectEdit(selectedData.get('slug'))} />}
         onClose={handleCloseDialog}
         onConfirm={_submit}
         labelConfirm="Enregistrer"

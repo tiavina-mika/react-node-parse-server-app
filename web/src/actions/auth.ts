@@ -131,7 +131,7 @@ export const changePassword = (values: ChangePasswordFormValues): AppThunk => ac
 	const newUser = await Parse.Cloud.run('changePassword', { 
     email: currentUser.get('email'), 
     password: values.newPassword,
-    confirmedPassword: values.newConfirmedpassword,
+    confirmedPassword: values.newConfirmedPassword,
   });
 
   // logout()(dispatch);

@@ -26,7 +26,6 @@ const useStyles = makeStyles({
   },
   actions: {
     borderTop: grey[600],
-    backgroundColor: grey[500],
     width: '100%',
     padding: '4px 10px',
     justifyContent: ({ actions }: any) => actions ? 'flex-start' : 'flex-end',
@@ -49,16 +48,21 @@ const useStyles = makeStyles({
     composes: 'flex1 overflowAuto',
     maxHeight: 'unset !important',
   },
+  actionButtonLeft: {
+    order: -1,
+    marginRight: 20,
+    marginLeft: 0,
+  },
 });
 
 type Props = {
 	elevation?: number;
-	rootClassName?: any;
+	rootClassName?: string;
 	title?: string;
-	titleClassName?: any;
+	titleClassName?: string;
 	content: ReactNode;
 	otherHeaderActionButtons?: ReactNode;
-	contentClassName?: any;
+	contentClassName?: string;
 	withActionButtons?: boolean;
 	actions?: ReactNode;
 	actionClassName?: string;
@@ -71,6 +75,7 @@ type Props = {
   headerPrimaryLabel?: string;
   okBtnClassName?: string;
   okBtnVariant?: 'text' | 'outlined' | 'contained' | undefined;
+  actionButtonPosition?: 'left' | 'right',
 };
 
 const CustomCard = ({
@@ -82,11 +87,12 @@ const CustomCard = ({
   otherHeaderActionButtons,
   withActionButtons,
   actionClassName,
+  actionButtonPosition = 'right',
   cancelLabel = 'Annuler',
   onHeaderPrimaryClick,
   headerPrimaryLabel,
   okBtnClassName,
-  okBtnVariant,
+  okBtnVariant = 'contained',
 }: Props) => {
 
   // styles
@@ -95,7 +101,7 @@ const CustomCard = ({
   const dispatch = useDispatch();
   const _goHome = () => dispatch(push('/'));
 
-  const actionItems = actions || (
+  const actionItems: ReactNode = actions || (
     <div className={classes.buttons}>
       {cancelAction && (
         <Button color="secondary" onClick={cancelAction || _goHome}>
@@ -108,11 +114,11 @@ const CustomCard = ({
           color="primary"
           onClick={okAction}
           variant={okBtnVariant}
-          classes={{ root: clsx(classes.okBtn, okBtnClassName) }}
+          classes={{ root: clsx(classes.okBtn, okBtnClassName, actionButtonPosition && classes.actionButtonLeft) }}
         >
           {okLabel}
         </Button>
-      )}
+      )} 
     </div>
   );
 

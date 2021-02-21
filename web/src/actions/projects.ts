@@ -98,7 +98,6 @@ export const updateProjectThunk = (project: any): any => {
 export const updateProject = (project: any, values: any): AppThunk => {
 
   return actionWithLoader(async (dispatch: AppDispatch, getState: () => RootState) => {
-
     setProjectValues(project, values);
     await updateProjectThunk(project)(dispatch, getState);
   });
@@ -122,6 +121,19 @@ export const deleteProject = (project: any): AppThunk => {
     });
   });
 };
+
+/**
+ * clear project from store
+ * @param {Object} project
+ */
+export const clearProject = (): any => {
+  return async (dispatch: AppDispatch) => {
+    dispatch({
+      type: 'REMOVE_PROJECT',
+    });
+  };
+};
+
 
 /**
  * load all templates
@@ -164,21 +176,21 @@ export const loadProjects = (): any => {
 };
 
 // --------------------------------------------------------//
-// ------------------ loading template --------------------//
+// ------------------ loading project --------------------//
 // --------------------------------------------------------//
+
 /**
  * load project into redux
  * @param projectId
  * @returns {function(*, *): Promise<*>}
  */
-export const loadProjectThunk = (projectId: any): any => {
+export const loadProjectThunk = (projectId: string, bySlug?: boolean): any => {
   return async (dispatch: AppDispatch, getState: () => RootState) => {
     const currentProject = getProject(getState());
     if (!currentProject || currentProject.id !== projectId) {
-      // loading template
+      // loading project
       const project = await new Parse.Query('Project')
-        .include('templates')
-        .equalTo('objectId', projectId)
+        .equalTo(bySlug ? 'slug' : 'objectId', projectId)
         .first();
 
       dispatch({
@@ -192,6 +204,17 @@ export const loadProjectThunk = (projectId: any): any => {
   };
 };
 
+/*
+* load project
+* @param projectId
+* @returns {*}
+*/
+export const loadProject = (projectId: string, bySlug?: boolean): AppThunk => {
+ return actionWithLoader(async (dispatch: AppDispatch, getState: () => RootState) => {
+   await loadProjectThunk(projectId, bySlug)(dispatch, getState);
+ });
+};
+
 // --------------------------------------------------------//
 // ---------------------- Routing -------------------------//
 // --------------------------------------------------------//
@@ -203,13 +226,5 @@ export const loadProjectThunk = (projectId: any): any => {
 export const showProject = (projectId: string) => showParseObj('project', projectId);
 
 export const goToProjects = () => push('/dashboard/projects');
-// export function showProjectCreation() {
-// 	return push('/projectCreation');
-// }
-
-// export function showProjects() {
-// 	return push('/projects');
-// }
-// export function showProjectEdit(projectId: string) {
-// 	return push('/projectEdit-' + projectId)
-// }
+export const goToProjectAdd = () => push('/dashboard/ajouter-projet');
+export const goToProjectEdit = (slug: string) => push('/dashboard/modifier-projet/' + slug);

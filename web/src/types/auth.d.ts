@@ -13,6 +13,6 @@ export interface LoginFormValues {
 export interface ChangePasswordFormValues {
 	password: string;
 	newPassword: string;
-	newConfirmedpassword: string;
+	newConfirmedPassword: string;
 }
 
