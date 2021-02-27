@@ -29,15 +29,16 @@ const ProjectInsert = () => {
 
   // get initial values for edition
   const getInitialValues = useCallback((): ProjectFormValues | undefined => {
+    const emptyDefaultTags = [{ title: '' }];
     if (!slug) {
-      return { tags: [{ title: '' }] };
+      return { tags: emptyDefaultTags };
     }
     const projectValues = getProjectValues(project);
     
     return {
-      ...projectValues,  
+      ...projectValues,
+      tags: projectValues.tags &&  projectValues.tags.length > 0 ? projectValues.tags : projectValues,
     };
-
   }, [project]);
 
   // save form values
