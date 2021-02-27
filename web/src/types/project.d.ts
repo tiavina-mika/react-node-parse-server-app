@@ -12,10 +12,14 @@ export interface ProjectAction {
   projects: Project[];
 }
 
+interface TagInput {
+  title: string;
+}
 export interface ProjectFormValues {
   name?: string;
 	previewImage?: any;
 	images?: any[];
+  tags?: TagInput[];
 }
 
 export type ProjectTypes = ProjectAction;

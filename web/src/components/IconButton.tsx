@@ -4,7 +4,7 @@ import ViewListIcon from '@material-ui/icons/ViewList';
 import AddIcon from '@material-ui/icons/Add';
 import CloseIcon from '@material-ui/icons/Close';
 import DeleteIcon from '@material-ui/icons/Delete';
-import ChevronRightIcon from '@material-ui/icons/ChevronRight';
+import VisibilityIcon from '@material-ui/icons/Visibility';
 import OpenInNewIcon from '@material-ui/icons/OpenInNew';
 import EditIcon from '@material-ui/icons/Edit';
 
@@ -36,7 +36,7 @@ const IconButton = ({
       case 'delete':
         Icon = <DeleteIcon />; break;
       case 'preview':
-        Icon = <ChevronRightIcon />; break;
+        Icon = <VisibilityIcon />; break;
       case 'edit':
         Icon = <EditIcon />; break;
       case 'open-new':

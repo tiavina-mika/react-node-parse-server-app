@@ -15,7 +15,7 @@ import { getProject, getProjects } from '../reducers/projects';
 const Project = Parse.Object.extend('Project');
 
 const PROJECT_PROPERTIES: any = new Set([
-  'name', 'previewImage', 'images',
+  'name', 'previewImage', 'images', 'tags',
 ]);
 
 /**

@@ -48,24 +48,25 @@ export function getParseServerUrl(forceProd = false) {
  * @param [type]
  * @returns {string}
  */
-export const getImageUrl = (type: 'project' | 'user') => {
+export const getImageUrl = (type: 'project' | 'user', fileName: string): string => {
   const env = getEnv();
   let serverHostName = 'http://localhost:1338/';
   if (env !== 'LOCAL') {
     serverHostName = 'http://localhost:1338/';
   }
 
-  return `${serverHostName}images/${type}s/`;	
+  return `${serverHostName}images/${type}s/${fileName}`;	
 };
 
 // --------------------------------------------------------------------//
 // ----------------------- Parsers/Formatter --------------------------//
 // --------------------------------------------------------------------//
 // to capitalize only first letter
-export const capitalizeFirstLetter = (string: string) => {
+export const capitalizeFirstLetter = (string: string): string => {
   if (!string || typeof string !== 'string' || (string && string.trim().length === 0)) return '';
   return string.charAt(0).toUpperCase() + string.slice(1);
 };
+
 /**
  * boolean to string
  * @param booleanValue

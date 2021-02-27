@@ -118,6 +118,28 @@ export const validateChangePassword = (values: ChangePasswordFormValues) => {
 };
 
 /**
+ * tags field validation
+ * @param {*} values 
+ * @param {*} field 
+ * @return {void} 
+ */
+const validateProjectTagsField = (values: any, field: any) => {
+  if (!values) return;
+
+  values.forEach((_: any, index: number): void => {
+		// title field
+		if (!values[index].title) {
+			throw new SubmissionError({
+				[field]: {
+					[index]: { 
+						title: 'Titre requis',
+					},
+				} });
+		}
+	});
+};
+
+/**
  * project form validation
  * @param {*} values 
  * @return string url 
@@ -154,4 +176,6 @@ export const validateProject = (values: ProjectFormValues) => {
 			message: 'Image size max should be ' + previewImagesMaxSize,
 		});
 	}
+
+  validateProjectTagsField(values.tags, 'tags'); 
 };

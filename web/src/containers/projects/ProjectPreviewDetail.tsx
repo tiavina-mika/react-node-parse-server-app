@@ -45,7 +45,7 @@ const ProjectPreviewDetail = ({ project }: Props) => {
         <Box width={200}>
           <img 
             alt={project?.get('name')} 
-            src={getImageUrl('project') + project?.get('previewImageId')}
+            src={getImageUrl('project', project?.get('previewImageId'))}
             className={classes.imagePreview}
           />          
         </Box>
@@ -68,7 +68,7 @@ const ProjectPreviewDetail = ({ project }: Props) => {
                   <Box width={200} key={index} m={2}>
                     <img 
                       alt={project?.get('name')} 
-                      src={getImageUrl('project') + imageId}
+                      src={getImageUrl('project', imageId)}
                       className={classes.imagePreview}
                     />          
                   </Box>

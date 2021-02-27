@@ -1,17 +1,15 @@
 import React from 'react';
-import { reduxForm } from 'redux-form';
+import { FieldArray, reduxForm } from 'redux-form';
 import { makeStyles } from '@material-ui/core/styles';
 
 import FormField from '../../components/form/FormField';
 import DropFileUploader from '../../components/form/DropFileUploader';
 import { maxProjectImages } from '../../utils/constants';
+import TagsInputField from './TagsInputField';
 
 const useStyles = makeStyles({
   root: {
     composes: 'flexColumn stretch center',
-  },
-  selectField: {
-    width: 160,
   },
 });
 
@@ -38,6 +36,9 @@ const ProjectForm = ({ handleSubmit }: Props) => {
         fullWidth
         maxFiles={maxProjectImages}
       />
+
+      <FieldArray label="Tags" name="tags" component={TagsInputField} />
+
       <input type='submit' />
     </form>
   );

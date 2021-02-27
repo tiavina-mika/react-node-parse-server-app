@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { useDispatch } from 'react-redux';
 import { submit } from 'redux-form';
 import { useToggle } from 'react-use';
@@ -24,6 +24,11 @@ const Projects = () => {
   // selectors
   const projects = useLoadData(loadProjects, getProjects);
 
+  // set one default field for array field
+  const getInitialValues = useCallback(() => ({
+    tags: [{ title: '' }],  
+  }), []);
+
   // go to project form add page
   const _goToProjectAdd = () => {
     dispatch(goToProjectAdd());
@@ -32,7 +37,7 @@ const Projects = () => {
   // save form values
   const _createProject = async (values: any) => {
     await dispatch(createProject(values));
-    toggle();
+    // toggle();
   };
 
   // submit form
@@ -52,7 +57,7 @@ const Projects = () => {
       />
       <ModalDialog
         title="Ajouter nouveau Projet"
-        content={<ProjectForm onSubmit={_createProject} />}
+        content={<ProjectForm onSubmit={_createProject} initialValues={getInitialValues()} />}
         iconTitle={<DialogTitleIcon onClick={_goToProjectAdd} />}
         isVisible={on}
         onConfirm={_submit}

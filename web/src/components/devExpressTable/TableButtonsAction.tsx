@@ -84,7 +84,7 @@ const TableButtonsAction = ({
       {onPreview && (
         <IconButton 
           onClick={handlePreview} 
-          type="open-new" 
+          type="preview" 
           color="default"
           size="small"
         />

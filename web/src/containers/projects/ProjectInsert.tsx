@@ -8,7 +8,7 @@ import CustomCard from '../../components/CustomCard';
 import IconButton from '../../components/IconButton';
 import ProjectForm from './ProjectForm';
 
-import { createProject, getProjectValues, goToProjectAdd, goToProjects, loadProject, updateProject, clearProject } from '../../actions/projects';
+import { createProject, getProjectValues, goToProjectAdd, goToProjects, loadProject, updateProject, clearProject, goToProjectPreview } from '../../actions/projects';
 import { getProject } from '../../reducers/projects';
 import { ProjectFormValues } from '../../types/project';
 import { useLoadDataBy } from '../../hooks/useLoadData';
@@ -29,10 +29,13 @@ const ProjectInsert = () => {
 
   // get initial values for edition
   const getInitialValues = useCallback((): ProjectFormValues | undefined => {
-    if (!slug) return;
+    if (!slug) {
+      return { tags: [{ title: '' }] };
+    }
     const projectValues = getProjectValues(project);
+    
     return {
-      ...projectValues,
+      ...projectValues,  
     };
 
   }, [project]);
@@ -63,9 +66,15 @@ const ProjectInsert = () => {
     dispatch(goToProjectAdd());
   };
 
+  // go to edit page
+  const _goToPreviewProject =  () => {
+    dispatch(goToProjectPreview(slug));
+  };
+
   // action button in right side of the card header
   const otherHeaderActionButtons = (
     <Box>
+      {slug && <IconButton onClick={_goToPreviewProject} type="preview" />}
       <IconButton onClick={_goToProjects} type="list" />
       {slug && <IconButton onClick={_goToAddPage} type="add" />}
     </Box>
