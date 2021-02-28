@@ -8,6 +8,7 @@ const { parseFunction, fromBO, toDateString, capitalizeCase } = require('../util
 const { decrypt } = require('../utils/cryptoUtils');
 const roleUtils = require('../utils/roleUtils');
 const { subscriptionEvent } = require('../log');
+const { default: slugify } = require('slugify');
 
 const regexEmail = new RegExp(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/);
 
@@ -91,7 +92,7 @@ Parse.Cloud.define('signUp', parseFunction(async request => {
 	user.set('username', email);
 	user.set('password', password);
 	user.set('email', email);
-	user.set('brandNew', true);
+	user.set('slug', slugify(firstName, { lower: true }));
 
 	firstName && user.set('firstName', capitalizeCase(firstName));
 	lastName && user.set('lastName', capitalizeCase(lastName));
@@ -124,19 +125,16 @@ Parse.Cloud.define('signUp', parseFunction(async request => {
 
 	const defaultAdminEmails = process.env.DEFAULT_ADMIN_EMAILS.split(',');
 
-	if (defaultAdminEmails.find(email => email === user.get('email'))) return;
-	//---- adding in role ----//
+	if (!defaultAdminEmails.find(email => email.trim() === user.get('email'))) return;
+
+	// ---- adding in role ---- //
+	user.set('active', true);
 	adminRole.getUsers().add(user);
 	await adminRole.save(null, USE_MASTER_KEY);
 }));
 
 Parse.Cloud.define('addAdministrator', parseFunction(async request => {
-	// there's no user or sessionToken in the request
-
-	if (!request.master) {
-		// it's usually called from the dashboard
-		throw new Error('Not a master');
-	}
+	console.log('request: ', request);
 
 	/*
 	eg of query parameters:
@@ -152,6 +150,7 @@ Parse.Cloud.define('addAdministrator', parseFunction(async request => {
 	newUser.set("lastName", lastName);
 	newUser.set("email", email);
 	newUser.set('fromBo', true);
+	newUser.set('slug', slugify(firstName, { lower: true }));
 
 	//---- schema validation ----//
 	validation.checkValid(newUser, schemaForUser);
@@ -164,20 +163,17 @@ Parse.Cloud.define('addAdministrator', parseFunction(async request => {
 	//----------------------------------//
 
 	//---- role retrieval/creation ----//
-	let adminRole = await new Parse.Query(Parse.Role)
+	const adminRole = await new Parse.Query(Parse.Role)
 		.equalTo("name", "Administrator")
 		.first(USE_MASTER_KEY);
-	if (!adminRole) {
-		const adminRoleACL = new Parse.ACL();
-		adminRoleACL.setRoleReadAccess("Administrator", true);
-		adminRoleACL.setPublicWriteAccess(false); // only masterKey
-		adminRole = new Parse.Role("Administrator", adminRoleACL);
-		// we don't need to save it now, it is saved below anyway
-	}
 
 	//---- adding in role ----//
-	adminRole.getUsers().add(newUser);
-	await adminRole.save(null, USE_MASTER_KEY);
+	if (adminRole) {
+		adminRole.getUsers().add(newUser);
+		await adminRole.save(null, USE_MASTER_KEY);		
+	}
+
+	return newUser;
 }));
 
 

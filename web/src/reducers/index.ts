@@ -2,11 +2,13 @@ import { RootState } from '../store';
 import appReducer from './app';
 import projectReducer from './projects';
 import userReducer from './users';
+import roleReducer from './roles';
 
 const appReducers = {
   app: appReducer, 
   projects: projectReducer,
   users: userReducer,
+  roles: roleReducer,
 };
 
 export default appReducers;

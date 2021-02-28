@@ -14,6 +14,9 @@ import Logout from './containers/Logout';
 import ChangePassword from './containers/profile/ChangePassword';
 import ProjectInsert from './containers/projects/ProjectInsert';
 import ProjectPreview from './containers/projects/ProjectPreview';
+import UserInsert from './containers/users/UserInsert';
+import UserPreview from './containers/users/UserPreview';
+import Users from './containers/users/Users';
 
 
 const Routes = () => {
@@ -43,6 +46,10 @@ const Routes = () => {
         <PrivateRoutes path="/dashboard/ajouter-projet" component={ProjectInsert} exact />
         <PrivateRoutes path="/dashboard/modifier-projet/:slug" component={ProjectInsert} exact />
         <PrivateRoutes path="/dashboard/projet/:slug" component={ProjectPreview} exact />
+
+        <PrivateRoutes path="/dashboard/utilisateurs" component={Users} exact />
+        <PrivateRoutes path="/dashboard/ajouter-utilisateur" component={UserInsert} exact />
+        <PrivateRoutes path="/dashboard/utilisateur/:slug" component={UserPreview} exact />
 
         <Route path="/logout" component={Logout} />
       </Switch>

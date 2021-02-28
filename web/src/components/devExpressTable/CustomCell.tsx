@@ -1,6 +1,7 @@
 import { Box } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
+import { ReactNode } from 'react';
 
 const useStyles = makeStyles({
   cell: {
@@ -12,7 +13,7 @@ const useStyles = makeStyles({
 });
 
 type Props = {
-	value: any;
+	value: string | number | ReactNode;
 	alignment?: any;
 	className?: string;
 };

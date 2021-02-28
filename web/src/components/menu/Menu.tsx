@@ -13,6 +13,7 @@ import { goToDashboard } from '../../actions/app';
 import { goToProfile, logout } from '../../actions/auth';
 import { getCurrentUser } from '../../reducers/app';
 import { goToProjects } from '../../actions/projects';
+import { goToUsers } from '../../actions/users';
 
 export const drawerWidthOpen: number = 240;
 
@@ -81,14 +82,13 @@ const Menu = ({ pathName }: Props) => {
 	const _showMenu = (menuName: string) => {
 		switch (menuName) {
 			case 'projects':
-				dispatch(goToProjects());
-				break;
+				dispatch(goToProjects()); break;
 			case 'profile':
-				dispatch(goToProfile());
-				break;
+				dispatch(goToProfile()); break;
+			case 'users':
+				dispatch(goToUsers()); break;
 			default:
-				dispatch(goToDashboard());
-				break;
+			dispatch(goToDashboard()); break;
 		}
 	};
 
@@ -143,7 +143,7 @@ const Menu = ({ pathName }: Props) => {
 				<List className={classes.list}>
 					<MenuItem
 						name="user"
-						label={user ? user.get('lastName') : 'user'}
+						label={user ? user.get('lastName').toUpperCase() : 'user'}
 					/>
 					<Divider />
 
@@ -157,6 +157,11 @@ const Menu = ({ pathName }: Props) => {
 						name='projects'
 						label='Projets'
 						selectedPathName='/projects'
+					/>
+					<MenuItem
+						name='users'
+						label='Utilisateurs'
+						selectedPathName='/utilisateurs'
 					/>
 				</List>
 				<List className={classes.list}>

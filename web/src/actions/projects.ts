@@ -79,35 +79,6 @@ export const createProject = (values: any): AppThunk => {
 };
 
 /**
- * saves and updates project
- * @param {Object} project
- */
-export const updateProjectThunk = (project: any): any => {
-  return async (dispatch: AppDispatch) => {
-    await project.save();
-    dispatch({
-      type: 'PROJECT_UPDATED',
-      project,
-    });
-  };
-};
-
-/**
- * update current project
- * @param project
- * @param values
- * @returns {*}
- */
-export const updateProject = (project: any, values: any): AppThunk => {
-  validateProject(values);
-
-  return actionWithLoader(async (dispatch: AppDispatch, getState: () => RootState) => {
-    setProjectValues(project, values);
-    await updateProjectThunk(project)(dispatch, getState);
-  });
-};
-
-/**
  * delete current project
  * @param project
  * @returns {*}
@@ -138,9 +109,27 @@ export const clearProject = (): any => {
   };
 };
 
+// ------------------------------------------------------------------- //
+// ------------------------------ THUNK ------------------------------ //
+// ------------------------------------------------------------------- //
 
 /**
- * load all templates
+ * saves and updates project
+ * @param {Object} project
+ */
+export const updateProjectThunk = (project: any): any => {
+  return async (dispatch: AppDispatch) => {
+    await project.save();
+    dispatch({
+      type: 'PROJECT_UPDATED',
+      project,
+    });
+  };
+};
+
+
+/**
+ * load all projects
  * @returns {Function}
  */
 export const loadProjectsThunk = (): any => {
@@ -158,30 +147,6 @@ export const loadProjectsThunk = (): any => {
     return projects;
   };
 };
-
-/**
- * load all templates
- * @returns {Function}
- */
-export const loadProjects = (): any => {
-  return async (dispatch: AppDispatch) => {
-    const projects = await new Parse.Query('Project')
-      .notEqualTo('deleted', true)
-      .find();
-
-    if (projects && Array.isArray(projects)) {
-      dispatch({
-        type: 'PROJECTS_LOADED',
-        projects,
-      });
-    }
-    return projects;
-  };
-};
-
-// --------------------------------------------------------//
-// ------------------ loading project --------------------//
-// --------------------------------------------------------//
 
 /**
  * load project into redux
@@ -208,6 +173,36 @@ export const loadProjectThunk = (projectId: string, bySlug?: boolean): any => {
   };
 };
 
+// --------------------------------------------------------//
+// --------------------- WITH LOADER ----------------------//
+// --------------------------------------------------------//
+
+/**
+ * update current project
+ * @param project
+ * @param values
+ * @returns {*}
+ */
+export const updateProject = (project: any, values: any): AppThunk => {
+  validateProject(values);
+
+  return actionWithLoader(async (dispatch: AppDispatch, getState: () => RootState) => {
+    setProjectValues(project, values);
+    await updateProjectThunk(project)(dispatch, getState);
+  });
+};
+
+/**
+ * load all projects
+ * @returns {Function}
+ */
+export const loadProjects = (): any => {
+  return actionWithLoader(async (dispatch: AppDispatch) => {
+    await loadProjectsThunk()(dispatch);
+  });
+};
+
+
 /*
 * load project
 * @param projectId
@@ -218,6 +213,7 @@ export const loadProject = (projectId: string, bySlug?: boolean): AppThunk => {
    await loadProjectThunk(projectId, bySlug)(dispatch, getState);
  });
 };
+
 
 // --------------------------------------------------------//
 // ---------------------- Routing -------------------------//

@@ -56,6 +56,7 @@ module.exports = {
     "indent": "off",
     "react/jsx-indent": "off",
     "react/jsx-indent-props": "off",
+    "no-await-in-loop": "off",
     "prefer-arrow/prefer-arrow-functions": [
       "warn",
       {
