@@ -68,7 +68,6 @@ export const validateLogin = (values: LoginFormValues) => {
 };
 
 /**
- *
  * @param values {object}
  */
 export const validateSignup = (values: SignupFormValues) => {
@@ -80,14 +79,35 @@ export const validateSignup = (values: SignupFormValues) => {
 		message: 'Email required',
 	});
 
+	// invalid email
+	validate({
+		error: values.email && !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email),
+		name: 'email',
+		message: 'Invalid email address',
+	});
+	
 	// required email
 	validate({
-		error: !values.lastName,
-		name: 'lastName',
-		message: 'Lastname required',
+		error: !values.firstName,
+		name: 'firstName',
+		message: 'Name required',
 	});
 	
 	validatePassword(values.password);
+
+	// new confirmed password required
+	validate({
+		error: !values.confirmedPassword,
+		name: 'confirmedPassword',
+		message: 'Confirm your Password',
+	});
+
+	// matched password
+	validate({
+		error: values.password !== values.confirmedPassword,
+		name: 'confirmedPassword',
+		message: 'Password does not match',
+	});
 };
 
 /**

@@ -5,25 +5,25 @@ const Joi = require('joi');
 
 const validation = require('../utils/validation.js');
 const { parseFunction, fromBO, toDateString, capitalizeCase } = require('../utils/utils');
-const { encrypt, decrypt } = require('../utils/cryptoUtils');
+const { decrypt } = require('../utils/cryptoUtils');
 const roleUtils = require('../utils/roleUtils');
-const { subscriptionEvent, changePasswordLog } = require('../log');
+const { subscriptionEvent } = require('../log');
 
 const regexEmail = new RegExp(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/);
 
-const schemaForUser = Joi.object({
+const schemaForUser = {
 	firstName: Joi.string().optional(),
 	lastName: Joi.string().required(),
 	email: Joi.string().regex(regexEmail).required(),
 	username: Joi.string().min(4).max(100).required(),
-	password: Joi.any() // later checked using validatePassword
-});
+	password: Joi.any(), // later checked using validatePassword
+};
 
-const schemaForChangePassword = Joi.object({
+const schemaForChangePassword = {
 	email: Joi.string().regex(regexEmail).required(),
 	password: Joi.string().min(8).max(45).required(),
 	confirmedPassword: Joi.ref('password'),
-});
+};
 
 const schemaForPasswordUpdate = {
 	token: Joi.string().required(),
@@ -94,7 +94,7 @@ Parse.Cloud.define('signUp', parseFunction(async request => {
 	user.set('brandNew', true);
 
 	firstName && user.set('firstName', capitalizeCase(firstName));
-	lastName && user.set('lastName', lastName.toUpperCase());
+	lastName && user.set('lastName', capitalizeCase(lastName));
 
 	//---- schema validation ----//
 	validation.checkValid(user, schemaForUser);

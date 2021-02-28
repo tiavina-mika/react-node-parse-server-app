@@ -18,6 +18,7 @@ const port = 1338;
 // ------------------------ envvars initialisation ------------------------- //
 // ------------------------------------------------------------------------- //
 let envFileName;
+
 if (DEV) {
   envFileName = '.env.local';
 } else {
@@ -82,6 +83,7 @@ const init = () => {
   app.use(bodyParser.json());
 
 	app.use(express.static('public'));
+	app.use(express.static('build'));
 
   //--------------------------//
 	//---- https forwarding ----//
@@ -119,6 +121,10 @@ const init = () => {
   if (DEV) {
     app.use('/dashboard', dashboard);
   }
+
+  app.get('/*', (req, res) => {
+		res.sendFile(__dirname + '/build/index.html');
+	});
 
   //------------------------//
   //---- Error handling ----//

@@ -186,7 +186,7 @@ function capitalizeFirstLetter(string) {
 }
 
 //to capitalize all first letter of each word
-function capitalizeCase(string) {
+const capitalizeCase = (string) => {
 	if (string == null || !string.length) {
 		return string;
 	}

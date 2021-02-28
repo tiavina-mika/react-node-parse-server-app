@@ -3,6 +3,7 @@ export interface SignupFormValues {
 	password: string;
 	firstName?: string;
 	lastName: string;
+	confirmedPassword: string;
 }
 
 export interface LoginFormValues {
