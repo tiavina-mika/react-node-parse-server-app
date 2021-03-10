@@ -3,7 +3,7 @@ import { useSelector, useStore } from 'react-redux';
 import { Redirect, Route, useLocation } from 'react-router';
 import { retrieveUserFromLocalStorage } from './actions/auth';
 import Dashboard from './containers/Dashboard';
-import { useIsAuth } from './hooks/useIsAuth';
+// import { useIsAuth } from './hooks/useIsAuth';
 import { getCurrentUser } from './reducers/app';
 
 type Props ={ component: ElementType; [x: string]: any };
